@@ -1,0 +1,39 @@
+Spark Command: /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/bin/java -cp /Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/conf/:/Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/jars/*:/Users/ravirajpurohit/Downloads/Developer/MSCS/cc/hadoop-3.2.2//etc/hadoop/ -Xmx1g org.apache.spark.deploy.history.HistoryServer
+========================================
+2022-11-16 12:57:41,836 INFO history.HistoryServer: Started daemon with process name: 35548@Ravis-MacBook-Air.local
+2022-11-16 12:57:41,873 INFO util.SignalUtils: Registering signal handler for TERM
+2022-11-16 12:57:41,875 INFO util.SignalUtils: Registering signal handler for HUP
+2022-11-16 12:57:41,875 INFO util.SignalUtils: Registering signal handler for INT
+2022-11-16 12:57:42,036 WARN util.Utils: Your hostname, Ravis-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 172.16.0.6 instead (on interface en0)
+2022-11-16 12:57:42,036 WARN util.Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+2022-11-16 12:57:42,484 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2022-11-16 12:57:42,582 INFO spark.SecurityManager: Changing view acls to: ravirajpurohit
+2022-11-16 12:57:42,583 INFO spark.SecurityManager: Changing modify acls to: ravirajpurohit
+2022-11-16 12:57:42,583 INFO spark.SecurityManager: Changing view acls groups to: 
+2022-11-16 12:57:42,583 INFO spark.SecurityManager: Changing modify acls groups to: 
+2022-11-16 12:57:42,584 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ravirajpurohit); groups with view permissions: Set(); users  with modify permissions: Set(ravirajpurohit); groups with modify permissions: Set()
+2022-11-16 12:57:42,712 INFO history.FsHistoryProvider: History server ui acls disabled; users with admin permissions: ; groups with admin permissions: 
+2022-11-16 12:57:43,266 INFO util.log: Logging initialized @2651ms to org.sparkproject.jetty.util.log.Slf4jLog
+2022-11-16 12:57:43,330 INFO server.Server: jetty-9.4.40.v20210413; built: 2021-04-13T20:42:42.668Z; git: b881a572662e1943a14ae12e7e1207989f218b74; jvm 1.8.0_292-b10
+2022-11-16 12:57:43,369 INFO server.Server: Started @2756ms
+2022-11-16 12:57:43,438 INFO server.AbstractConnector: Started ServerConnector@22c86919{HTTP/1.1, (http/1.1)}{0.0.0.0:18080}
+2022-11-16 12:57:43,440 INFO util.Utils: Successfully started service on port 18080.
+2022-11-16 12:57:43,470 INFO handler.ContextHandler: Started o.s.j.s.ServletContextHandler@6691490c{/,null,AVAILABLE,@Spark}
+2022-11-16 12:57:43,473 INFO handler.ContextHandler: Started o.s.j.s.ServletContextHandler@e24ddd0{/json,null,AVAILABLE,@Spark}
+2022-11-16 12:57:43,474 INFO handler.ContextHandler: Started o.s.j.s.ServletContextHandler@548e76f1{/api,null,AVAILABLE,@Spark}
+2022-11-16 12:57:43,488 INFO handler.ContextHandler: Started o.s.j.s.ServletContextHandler@59a67c3a{/static,null,AVAILABLE,@Spark}
+2022-11-16 12:57:43,489 INFO handler.ContextHandler: Started o.s.j.s.ServletContextHandler@3af4e0bf{/history,null,AVAILABLE,@Spark}
+2022-11-16 12:57:43,497 INFO history.HistoryServer: Bound HistoryServer to 0.0.0.0, and started at http://172.16.0.6:18080
+Exception in thread "main" java.io.FileNotFoundException: Log directory specified does not exist: hdfs://localhost:9000/spark-logs
+	at org.apache.spark.deploy.history.FsHistoryProvider.startPolling(FsHistoryProvider.scala:291)
+	at org.apache.spark.deploy.history.FsHistoryProvider.initialize(FsHistoryProvider.scala:236)
+	at org.apache.spark.deploy.history.FsHistoryProvider.start(FsHistoryProvider.scala:413)
+	at org.apache.spark.deploy.history.HistoryServer$.main(HistoryServer.scala:306)
+	at org.apache.spark.deploy.history.HistoryServer.main(HistoryServer.scala)
+Caused by: java.io.FileNotFoundException: File does not exist: hdfs://localhost:9000/spark-logs
+	at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1586)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1579)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java:1594)
+	at org.apache.spark.deploy.history.FsHistoryProvider.startPolling(FsHistoryProvider.scala:281)
+	... 4 more

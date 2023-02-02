@@ -1,0 +1,35 @@
+Spark Command: /Library/Java/JavaVirtualMachines/jdk-17.0.5.jdk/Contents/Home/bin/java -cp /Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/conf/:/Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/jars/* -Xmx1g org.apache.spark.deploy.master.Master --host Ravis-MacBook-Air.local --port 7077 --webui-port 8080
+========================================
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+22/11/16 03:42:56 INFO Master: Started daemon with process name: 30600@Ravis-MacBook-Air.local
+22/11/16 03:42:56 INFO SignalUtils: Registering signal handler for TERM
+22/11/16 03:42:56 INFO SignalUtils: Registering signal handler for HUP
+22/11/16 03:42:56 INFO SignalUtils: Registering signal handler for INT
+22/11/16 03:42:56 WARN Utils: Your hostname, Ravis-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 172.16.0.6 instead (on interface en0)
+22/11/16 03:42:56 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+22/11/16 03:42:56 ERROR SparkUncaughtExceptionHandler: Uncaught exception in thread Thread[main,5,main]
+java.lang.ExceptionInInitializerError
+	at org.apache.spark.unsafe.array.ByteArrayMethods.<clinit>(ByteArrayMethods.java:54)
+	at org.apache.spark.internal.config.package$.<init>(package.scala:1095)
+	at org.apache.spark.internal.config.package$.<clinit>(package.scala)
+	at org.apache.spark.SparkConf$.<init>(SparkConf.scala:654)
+	at org.apache.spark.SparkConf$.<clinit>(SparkConf.scala)
+	at org.apache.spark.SparkConf.setIfMissing(SparkConf.scala:179)
+	at org.apache.spark.util.Utils$.$anonfun$loadDefaultSparkProperties$4(Utils.scala:2108)
+	at scala.collection.immutable.HashMap$HashMap1.foreach(HashMap.scala:234)
+	at scala.collection.immutable.HashMap$HashTrieMap.foreach(HashMap.scala:468)
+	at org.apache.spark.util.Utils$.$anonfun$loadDefaultSparkProperties$2(Utils.scala:2107)
+	at org.apache.spark.util.Utils$.$anonfun$loadDefaultSparkProperties$2$adapted(Utils.scala:2104)
+	at scala.Option.foreach(Option.scala:407)
+	at org.apache.spark.util.Utils$.loadDefaultSparkProperties(Utils.scala:2104)
+	at org.apache.spark.deploy.master.MasterArguments.<init>(MasterArguments.scala:55)
+	at org.apache.spark.deploy.master.Master$.main(Master.scala:1208)
+	at org.apache.spark.deploy.master.Master.main(Master.scala)
+Caused by: java.lang.reflect.InaccessibleObjectException: Unable to make private java.nio.DirectByteBuffer(long,int) accessible: module java.base does not "opens java.nio" to unnamed module @4bde3f8a
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:354)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:297)
+	at java.base/java.lang.reflect.Constructor.checkCanSetAccessible(Constructor.java:188)
+	at java.base/java.lang.reflect.Constructor.setAccessible(Constructor.java:181)
+	at org.apache.spark.unsafe.Platform.<clinit>(Platform.java:56)
+	... 16 more
+22/11/16 03:42:56 INFO ShutdownHookManager: Shutdown hook called

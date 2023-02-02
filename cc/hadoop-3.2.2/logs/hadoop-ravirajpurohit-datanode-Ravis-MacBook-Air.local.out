@@ -1,0 +1,34 @@
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+file size               (blocks, -f) unlimited
+max locked memory       (kbytes, -l) unlimited
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 256
+pipe size            (512 bytes, -p) 1
+stack size              (kbytes, -s) 8176
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 1333
+virtual memory          (kbytes, -v) unlimited
+Exception in thread "Thread-0" java.lang.RuntimeException: java.io.FileNotFoundException: /Users/ravirajpurohit/Downloads/Developer/MSCS/cc/hadoop-3.2.2/etc/hadoop/core-site.xml (Operation not permitted)
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3037)
+	at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:2984)
+	at org.apache.hadoop.conf.Configuration.loadProps(Configuration.java:2864)
+	at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2846)
+	at org.apache.hadoop.conf.Configuration.get(Configuration.java:1200)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1812)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1789)
+	at org.apache.hadoop.util.ShutdownHookManager.getShutdownTimeout(ShutdownHookManager.java:183)
+	at org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(ShutdownHookManager.java:145)
+	at org.apache.hadoop.util.ShutdownHookManager.access$300(ShutdownHookManager.java:65)
+	at org.apache.hadoop.util.ShutdownHookManager$1.run(ShutdownHookManager.java:102)
+Caused by: java.io.FileNotFoundException: /Users/ravirajpurohit/Downloads/Developer/MSCS/cc/hadoop-3.2.2/etc/hadoop/core-site.xml (Operation not permitted)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:111)
+	at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:86)
+	at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:189)
+	at org.apache.hadoop.conf.Configuration.parse(Configuration.java:2957)
+	at org.apache.hadoop.conf.Configuration.getStreamReader(Configuration.java:3053)
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3011)
+	... 10 more

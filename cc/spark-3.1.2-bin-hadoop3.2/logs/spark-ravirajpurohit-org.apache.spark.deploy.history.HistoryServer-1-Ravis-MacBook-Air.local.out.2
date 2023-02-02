@@ -1,0 +1,108 @@
+Spark Command: /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/bin/java -cp /Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/conf/:/Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/jars/* -Xmx1g org.apache.spark.deploy.history.HistoryServer
+========================================
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+22/11/16 03:46:01 INFO HistoryServer: Started daemon with process name: 30710@Ravis-MacBook-Air.local
+22/11/16 03:46:01 INFO SignalUtils: Registering signal handler for TERM
+22/11/16 03:46:01 INFO SignalUtils: Registering signal handler for HUP
+22/11/16 03:46:01 INFO SignalUtils: Registering signal handler for INT
+22/11/16 03:46:01 WARN Utils: Your hostname, Ravis-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 172.16.0.6 instead (on interface en0)
+22/11/16 03:46:01 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+22/11/16 03:46:02 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+22/11/16 03:46:02 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:46:02 INFO SecurityManager: Changing modify acls to: ravirajpurohit
+22/11/16 03:46:02 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:46:02 INFO SecurityManager: Changing modify acls groups to: 
+22/11/16 03:46:02 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ravirajpurohit); groups with view permissions: Set(); users  with modify permissions: Set(ravirajpurohit); groups with modify permissions: Set()
+22/11/16 03:46:02 INFO FsHistoryProvider: History server ui acls disabled; users with admin permissions: ; groups with admin permissions: 
+22/11/16 03:46:02 INFO Utils: Successfully started service on port 18080.
+22/11/16 03:46:02 INFO HistoryServer: Bound HistoryServer to 0.0.0.0, and started at http://172.16.0.6:18080
+22/11/16 03:46:02 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116033836-0002 for listing data...
+22/11/16 03:46:02 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116033919-0003 for listing data...
+22/11/16 03:46:03 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116033836-0002
+22/11/16 03:46:03 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116033556-0001 for listing data...
+22/11/16 03:46:03 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116033919-0003
+22/11/16 03:46:03 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116033454-0000 for listing data...
+22/11/16 03:46:03 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116033454-0000
+22/11/16 03:46:03 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116033556-0001
+22/11/16 03:46:10 WARN HttpChannel: /history/
+java.lang.ArrayIndexOutOfBoundsException: 1
+	at org.apache.spark.deploy.history.HistoryServer$$anon$1.doGet(HistoryServer.scala:82)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:503)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.sparkproject.jetty.servlet.ServletHolder.handle(ServletHolder.java:791)
+	at org.sparkproject.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1626)
+	at org.apache.spark.ui.HttpSecurityFilter.doFilter(HttpSecurityFilter.scala:95)
+	at org.sparkproject.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:193)
+	at org.sparkproject.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1601)
+	at org.sparkproject.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:548)
+	at org.sparkproject.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
+	at org.sparkproject.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1435)
+	at org.sparkproject.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:188)
+	at org.sparkproject.jetty.servlet.ServletHandler.doScope(ServletHandler.java:501)
+	at org.sparkproject.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:186)
+	at org.sparkproject.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1350)
+	at org.sparkproject.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.sparkproject.jetty.server.handler.gzip.GzipHandler.handle(GzipHandler.java:763)
+	at org.sparkproject.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:234)
+	at org.sparkproject.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:127)
+	at org.sparkproject.jetty.server.Server.handle(Server.java:516)
+	at org.sparkproject.jetty.server.HttpChannel.lambda$handle$1(HttpChannel.java:388)
+	at org.sparkproject.jetty.server.HttpChannel.dispatch(HttpChannel.java:633)
+	at org.sparkproject.jetty.server.HttpChannel.handle(HttpChannel.java:380)
+	at org.sparkproject.jetty.server.HttpConnection.onFillable(HttpConnection.java:277)
+	at org.sparkproject.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:311)
+	at org.sparkproject.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.sparkproject.jetty.io.ChannelEndPoint$1.run(ChannelEndPoint.java:104)
+	at org.sparkproject.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:882)
+	at org.sparkproject.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1036)
+	at java.lang.Thread.run(Thread.java:748)
+22/11/16 03:50:23 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035018-0000.inprogress for listing data...
+22/11/16 03:50:23 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035018-0000.inprogress
+22/11/16 03:50:43 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035018-0000 for listing data...
+22/11/16 03:50:43 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035018-0000
+22/11/16 03:51:03 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035057-0001.inprogress for listing data...
+22/11/16 03:51:03 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035057-0001.inprogress
+22/11/16 03:51:23 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035057-0001 for listing data...
+22/11/16 03:51:23 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035057-0001
+22/11/16 03:54:13 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035405-0002.inprogress for listing data...
+22/11/16 03:54:13 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035405-0002.inprogress
+22/11/16 03:54:23 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035405-0002 for listing data...
+22/11/16 03:54:23 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035405-0002
+22/11/16 03:56:51 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:56:51 INFO SecurityManager: Changing modify acls to: ravirajpurohit
+22/11/16 03:56:51 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:56:51 INFO SecurityManager: Changing modify acls groups to: 
+22/11/16 03:56:51 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ravirajpurohit); groups with view permissions: Set(); users  with modify permissions: Set(ravirajpurohit); groups with modify permissions: Set()
+22/11/16 03:56:51 INFO SecurityManager: Changing acls enabled to: false
+22/11/16 03:56:51 INFO SecurityManager: Changing admin acls to: 
+22/11/16 03:56:51 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:56:51 INFO SecurityManager: Changing admin acls groups to: 
+22/11/16 03:56:51 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:56:51 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035405-0002 to re-build UI...
+22/11/16 03:56:52 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035405-0002
+22/11/16 03:57:28 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:57:28 INFO SecurityManager: Changing modify acls to: ravirajpurohit
+22/11/16 03:57:28 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:57:28 INFO SecurityManager: Changing modify acls groups to: 
+22/11/16 03:57:28 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ravirajpurohit); groups with view permissions: Set(); users  with modify permissions: Set(ravirajpurohit); groups with modify permissions: Set()
+22/11/16 03:57:28 INFO SecurityManager: Changing acls enabled to: false
+22/11/16 03:57:28 INFO SecurityManager: Changing admin acls to: 
+22/11/16 03:57:28 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:57:28 INFO SecurityManager: Changing admin acls groups to: 
+22/11/16 03:57:28 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:57:28 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035018-0000 to re-build UI...
+22/11/16 03:57:28 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035018-0000
+22/11/16 03:57:44 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:57:44 INFO SecurityManager: Changing modify acls to: ravirajpurohit
+22/11/16 03:57:44 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:57:44 INFO SecurityManager: Changing modify acls groups to: 
+22/11/16 03:57:44 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ravirajpurohit); groups with view permissions: Set(); users  with modify permissions: Set(ravirajpurohit); groups with modify permissions: Set()
+22/11/16 03:57:44 INFO SecurityManager: Changing acls enabled to: false
+22/11/16 03:57:44 INFO SecurityManager: Changing admin acls to: 
+22/11/16 03:57:44 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:57:44 INFO SecurityManager: Changing admin acls groups to: 
+22/11/16 03:57:44 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:57:44 INFO FsHistoryProvider: Parsing file:/tmp/spark-events/app-20221116035057-0001 to re-build UI...
+22/11/16 03:57:44 INFO FsHistoryProvider: Finished parsing file:/tmp/spark-events/app-20221116035057-0001
+22/11/16 04:15:03 ERROR HistoryServer: RECEIVED SIGNAL TERM
+22/11/16 04:15:03 INFO ShutdownHookManager: Shutdown hook called

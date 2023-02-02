@@ -1,0 +1,59 @@
+Spark Command: /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/bin/java -cp /Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/conf/:/Users/ravirajpurohit/Downloads/Developer/MSCS/cc/spark-3.1.2-bin-hadoop3.2/jars/* -Xmx1g org.apache.spark.deploy.master.Master --host Ravis-MacBook-Air.local --port 7077 --webui-port 8080
+========================================
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+22/11/16 03:10:41 INFO Master: Started daemon with process name: 30022@Ravis-MacBook-Air.local
+22/11/16 03:10:41 INFO SignalUtils: Registering signal handler for TERM
+22/11/16 03:10:41 INFO SignalUtils: Registering signal handler for HUP
+22/11/16 03:10:41 INFO SignalUtils: Registering signal handler for INT
+22/11/16 03:10:41 WARN Utils: Your hostname, Ravis-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 172.16.0.6 instead (on interface en0)
+22/11/16 03:10:41 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+22/11/16 03:10:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+22/11/16 03:10:41 INFO SecurityManager: Changing view acls to: ravirajpurohit
+22/11/16 03:10:41 INFO SecurityManager: Changing modify acls to: ravirajpurohit
+22/11/16 03:10:41 INFO SecurityManager: Changing view acls groups to: 
+22/11/16 03:10:41 INFO SecurityManager: Changing modify acls groups to: 
+22/11/16 03:10:41 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ravirajpurohit); groups with view permissions: Set(); users  with modify permissions: Set(ravirajpurohit); groups with modify permissions: Set()
+22/11/16 03:10:42 INFO Utils: Successfully started service 'sparkMaster' on port 7077.
+22/11/16 03:10:42 INFO Master: Starting Spark master at spark://Ravis-MacBook-Air.local:7077
+22/11/16 03:10:42 INFO Master: Running Spark version 3.1.2
+22/11/16 03:10:42 INFO Utils: Successfully started service 'MasterUI' on port 8080.
+22/11/16 03:10:42 INFO MasterWebUI: Bound MasterWebUI to 0.0.0.0, and started at http://172.16.0.6:8080
+22/11/16 03:10:42 INFO Master: I have been elected leader! New state: ALIVE
+22/11/16 03:11:03 INFO Master: Registering worker 172.16.0.6:65201 with 8 cores, 7.0 GiB RAM
+22/11/16 03:34:54 INFO Master: Registering app file1freq_DISK_ONLY
+22/11/16 03:34:54 INFO Master: Registered app file1freq_DISK_ONLY with ID app-20221116033454-0000
+22/11/16 03:34:54 INFO Master: Launching executor app-20221116033454-0000/0 on worker worker-20221116031102-172.16.0.6-65201
+22/11/16 03:34:56 INFO Master: Received unregister request from application app-20221116033454-0000
+22/11/16 03:34:56 INFO Master: Removing app app-20221116033454-0000
+22/11/16 03:34:56 WARN Master: Got status update for unknown executor app-20221116033454-0000/0
+22/11/16 03:34:56 INFO Master: 127.0.0.1:65343 got disassociated, removing it.
+22/11/16 03:34:56 INFO Master: 172.16.0.6:65342 got disassociated, removing it.
+22/11/16 03:35:56 INFO Master: Registering app file1freq_DISK_ONLY
+22/11/16 03:35:56 INFO Master: Registered app file1freq_DISK_ONLY with ID app-20221116033556-0001
+22/11/16 03:35:56 INFO Master: Launching executor app-20221116033556-0001/0 on worker worker-20221116031102-172.16.0.6-65201
+22/11/16 03:36:12 INFO Master: Received unregister request from application app-20221116033556-0001
+22/11/16 03:36:12 INFO Master: Removing app app-20221116033556-0001
+22/11/16 03:36:12 INFO Master: 127.0.0.1:65354 got disassociated, removing it.
+22/11/16 03:36:12 INFO Master: 172.16.0.6:65353 got disassociated, removing it.
+22/11/16 03:36:12 WARN Master: Got status update for unknown executor app-20221116033556-0001/0
+22/11/16 03:38:36 INFO Master: Registering app file1freq_DISK_ONLY
+22/11/16 03:38:36 INFO Master: Registered app file1freq_DISK_ONLY with ID app-20221116033836-0002
+22/11/16 03:38:36 INFO Master: Launching executor app-20221116033836-0002/0 on worker worker-20221116031102-172.16.0.6-65201
+22/11/16 03:38:38 INFO Master: Received unregister request from application app-20221116033836-0002
+22/11/16 03:38:38 INFO Master: Removing app app-20221116033836-0002
+22/11/16 03:38:38 INFO Master: 127.0.0.1:65395 got disassociated, removing it.
+22/11/16 03:38:38 INFO Master: 172.16.0.6:65394 got disassociated, removing it.
+22/11/16 03:38:38 WARN Master: Got status update for unknown executor app-20221116033836-0002/0
+22/11/16 03:39:19 INFO Master: Registering app file1freq_DISK_ONLY
+22/11/16 03:39:19 INFO Master: Registered app file1freq_DISK_ONLY with ID app-20221116033919-0003
+22/11/16 03:39:19 INFO Master: Launching executor app-20221116033919-0003/0 on worker worker-20221116031102-172.16.0.6-65201
+22/11/16 03:39:35 INFO Master: Received unregister request from application app-20221116033919-0003
+22/11/16 03:39:35 INFO Master: Removing app app-20221116033919-0003
+22/11/16 03:39:35 INFO Master: 127.0.0.1:65409 got disassociated, removing it.
+22/11/16 03:39:35 INFO Master: 172.16.0.6:65408 got disassociated, removing it.
+22/11/16 03:39:35 WARN Master: Got status update for unknown executor app-20221116033919-0003/0
+22/11/16 03:41:13 INFO Master: 127.0.0.1:65202 got disassociated, removing it.
+22/11/16 03:41:13 INFO Master: 172.16.0.6:65201 got disassociated, removing it.
+22/11/16 03:41:13 INFO Master: Removing worker worker-20221116031102-172.16.0.6-65201 on 172.16.0.6:65201
+22/11/16 03:41:13 INFO Master: Telling app of lost worker: worker-20221116031102-172.16.0.6-65201
+22/11/16 03:41:27 ERROR Master: RECEIVED SIGNAL TERM
