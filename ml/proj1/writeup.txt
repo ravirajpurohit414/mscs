@@ -1,0 +1,26 @@
+------------- MACHINE LEARNING PROJECT 1 -------------
+
+PLEASE REFER TO THE IPYNB FILE for better comments
+Comments are provided and explained with Markdowns
+
+1 - Linear Regression
+---------------------
+
+A - Implemented a linear regression model which can handle different function depths
+B - Trained the linear regressor using training data and plotted results for different function depths ranging from 0 to 6. The model complexity and the variation in the linear regression curve increases as we increase the function depths
+C - Evaluated the regression function on test data. Found the best fit for depth function 1.
+
+2 - Locally Weighted linear regression
+--------------------------------------
+A - implemented a locally weighted regression model
+B - Used training data provided to train the model
+C - Tested on testing data, the best MSE is 0.058
+D - Trained the model on first 20 items, resulted in a significant increase in MSE
+E - given the output, I can say that the data can be consistent with the function format in question 1 because it is likely to contain both sine and cosine periodicity with some additional noise on top of it.
+
+3 - Softmax Regression
+----------------------
+A - Used the dataset from homework 1 for this problem and created a softmax regression model for predicting category of material
+B - Implemented leave one out method for the dataset. the accuracy in this case is greater than KNN method implemented in Homework 1. Also, the leave one out method provides more data for training and testing can be done on each instance. Hence all the data points are covered to capture the variation in dataset.
+C - Retrained the softmax regression model without the 4th attribute. this model is much better than KNN too. Only the first 3 features capture the vital information for the prediction. I can say that the fourth feature is not contributing to the model's performance. In fact, it seems that the 4th feature is deteriorating the performance. So, it is for good to remove it
+
