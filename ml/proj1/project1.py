@@ -4,9 +4,6 @@
 # # Machine Learning Project 1
 # ---
 
-# In[1]:
-
-
 ## import required libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,10 +11,6 @@ import matplotlib.pyplot as plt
 ## global variables
 k = 9
 gamma = 0.148
-
-
-# In[2]:
-
 
 def format_train_test_data(dataset):
     """
@@ -47,10 +40,6 @@ def format_train_test_data(dataset):
     
     return np.array(data), np.array(labels)
 
-
-# In[3]:
-
-
 ## load data
 with open('train.txt') as f:
     train_dataset = f.readlines()
@@ -60,10 +49,6 @@ with open('test.txt') as f:
     test_dataset = f.readlines()
     f.close()
 
-
-# In[4]:
-
-
 ## split the data samples and target labels
 train_data, train_labels = format_train_test_data(train_dataset)
 test_data, test_labels = format_train_test_data(test_dataset)
@@ -71,33 +56,6 @@ test_data, test_labels = format_train_test_data(test_dataset)
 
 # ## Linear Regression
 # ---
-
-# In[5]:
-
-
-train_data
-
-
-# In[6]:
-
-
-train_labels
-
-
-# In[7]:
-
-
-test_data
-
-
-# In[8]:
-
-
-test_labels
-
-
-# In[9]:
-
 
 def gen_feature_matrix(data, k, d):
     """
@@ -126,10 +84,6 @@ def gen_feature_matrix(data, k, d):
         sin_cos[:, 2*i+1] = ((np.cos((i+1)*k*data))**(i*k))*np.sin(data)
     
     return np.column_stack((np.ones_like(data), data, sin_cos, np.sin(k*data), np.cos(k*data)))
-
-
-# In[10]:
-
 
 ### ------------------------------------------------------------------------------- ###
 ### ------------------------------ PROBLEM 1, PART A ------------------------------ ###
@@ -194,9 +148,6 @@ def linear_regression(x_train, y_train, x_test, y_test, k, d):
 
 # ## Linear Regression Execution
 
-# In[11]:
-
-
 ## Performance analysis on train_data
 
 ## -------- RUN ALL THE ABOVE CELLS BEFORE RUNNING THIS --------
@@ -250,13 +201,6 @@ def problem1(train_data, train_labels, test_data, test_labels, k):
 
 mse_list = problem1(train_data, train_labels, test_data, test_labels, k)
 
-
-# In[12]:
-
-
-mse_list
-
-
 # ### Linear Regression Conclusion
 # ---
 # 
@@ -277,9 +221,6 @@ mse_list
 
 # ## Locally Weighted Linear Regression
 # ---
-
-# In[13]:
-
 
 def calculate_weights(X, x_query, gamma):
     """
@@ -322,10 +263,6 @@ def locally_weighted_linear_regression(X_train, y_train, x_query, gamma):
 
     return y_pred
 
-
-# In[14]:
-
-
 ## prepare data for only raw feature and a constant feature
 def prepare_train_test_data_lwlr(data):
     """
@@ -346,10 +283,6 @@ def prepare_train_test_data_lwlr(data):
     X[:,1] = data
     
     return X
-
-
-# In[15]:
-
 
 ## -------- RUN THE ABOVE CELLS UPTO RELEVANT HEADING BEFORE RUNNING THIS --------
 def problem2(train_data, train_labels, test_data, test_labels):
@@ -421,7 +354,6 @@ def problem2(train_data, train_labels, test_data, test_labels):
     
     Hence Locally Weighted Linear Regression is better performing in this case.
     """
-    
     
     ### ------------------------------------------------------------------------------- ###
     ### ------------------------------ PROBLEM 2, PART D ------------------------------ ###
@@ -503,9 +435,6 @@ problem2(train_data, train_labels, test_data, test_labels)
 # # Softmax Regression
 # ---
 
-# In[16]:
-
-
 def format_train_test_data_so_re(dataset):
     """
     A function to properly structure the dataset given for 
@@ -544,10 +473,6 @@ def format_train_test_data_so_re(dataset):
             
     return np.array([f1,f2,f3,f4]).T, np.array(labels)
 
-
-# In[17]:
-
-
 ## load dataset
 with open('train_softmax.txt') as f:
     train_data_so_re = f.readlines()
@@ -560,10 +485,6 @@ with open('test_softmax.txt') as f:
 train_data_so_re, train_labels_so_re = format_train_test_data_so_re(train_data_so_re)
 test_data_so_re, test_labels_so_re = format_train_test_data_so_re(test_data_so_re)
 
-
-# In[18]:
-
-
 ## one hot encoding
 labels = np.unique(train_labels_so_re)
 
@@ -573,10 +494,6 @@ label_to_int = {label: i for i, label in enumerate(labels)}
 # Use the dictionary to encode the data
 train_labels_so_re_ohe = np.array([label_to_int[label] for label in train_labels_so_re])
 test_labels_so_re_ohe = np.array([label_to_int[label] for label in test_labels_so_re])
-
-
-# In[19]:
-
 
 def soft_max_impl(row):
     """
@@ -623,28 +540,10 @@ def model_predict(train_data, Weight):
     # return prediction
     return y_pred
 
-
-# In[20]:
-
-
 ## execute model
 weight = model_fit(train_data_so_re, train_labels_so_re_ohe)
 
-
-# In[21]:
-
-
-test_labels_so_re_ohe
-
-
-# In[24]:
-
-
 pred = model_predict(test_data_so_re, weight)
-
-
-# In[26]:
-
 
 accuracy = sum(pred == test_labels_so_re_ohe)/len(test_labels_so_re_ohe)
 
@@ -654,9 +553,6 @@ print('Accuracy is ',accuracy*100, "%")
 # ## Part B
 # ----
 # Leave one out method for training
-
-# In[28]:
-
 
 ## for calculating accuracy
 total_correct = 0
@@ -689,25 +585,13 @@ print('Accuracy is ',100*(total_correct/len(train_data_so_re)))
 # ---
 # Performance Without 4th feature 
 
-# In[29]:
-
-
 weight = model_fit(train_data_so_re[:,:-1], train_labels_so_re_ohe)
 
-
-# In[31]:
-
-
 y_pred = model_predict(test_data_so_re[:, :-1], weight)
-
-
-# In[32]:
-
 
 accuracy = sum(y_pred == test_labels_so_re_ohe)/len(test_labels_so_re_ohe)
 
 print("accuracy is ", accuracy*100)
-
 
 # """
 # While analysing the accuracy, I found that 
