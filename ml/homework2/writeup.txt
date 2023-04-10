@@ -10,6 +10,7 @@ Comments are provided and explained with Markdowns
 
 
 
+
 2 - Support Vector Machines ONE-AGAINST-ALL
 -------------------------------------------
 ---- Part A ----
@@ -60,15 +61,23 @@ Testing Accuracy: 100.0%
 
 
 ---- Part B ----
-
-
-
-
-
-
+- Build a decision tree learner for the classification problem.
+- This decision tree depends on the max_depth parameter which is an arbitrary number to be provided externally.
+- Maximum information gain condition is used to build the tree.
 
 ---- Part C ----
+- Divided the dataset into training and testing set and required
+- Similar as for question 2
+- Running the decision tree learner to predict the material type label
+- Iteratively calculating the training and testing accuracy by defining max_depth ranging from 1 to 9.
+- Model performance can be measured by comparing accuracy for different max_depths
 
+-- OBSERVATIONS --
+- As expected, while increasing the max depth, the training as well as testing accuracies increase.
+- After some time, at max depth level 6, the increase in training accuracy and testing accuracy is relatively slower.
+- We can also observe that for max depths 2,3,4,5 the testing accuracies are consistent.
+- This can mean that the features at these depths are not learning meaningful information for testing data.
+- Finally, the model seems to learn well at max_depth of 6 and 7 and does not appear to be overfitting as the training and testing accuracies are consistent with each other.
 
 
 
