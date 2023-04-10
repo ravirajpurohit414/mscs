@@ -6,15 +6,11 @@ Comments are provided and explained with Markdowns
 1 - Support Vector Machines
 ---------------------------
 ---- Part A ----
-
-
-
+- Formulated the optimization function and the constraints for the corresponding linear maximum margin optimization problem without a regularization term.
+- Formulated the Corresponding Lagrangian and the Lagrangian Dual
 
 ---- Part B ----
 Reference - "Learning from Data" by Yaser S. Abu-Mostafa, Malik Magdon-Ismail, and Hsuan-Tien Lin.
-
-
-
 
 
 2 - Support Vector Machines ONE-AGAINST-ALL
@@ -24,6 +20,7 @@ The steps for this involved -
 Loading the dataset and split it into train and test as required (first 6 rows of each material type for testing)
 Trained a SVM classifier using linear kernel
 Tested the model on the test dataset and calculated the classification accuracy
+Plotted a graph for all combinations of features, showing the sum data distinction through 2D space as mentioned in the statement.
 
 ### OBSERVATIONS - 
 - While increasing the regularization weight value of non-zero C we see an increase in the model accuracy.
@@ -48,6 +45,7 @@ The preprocessing steps are similar as the part A. The only difference is while 
 - In this example - the saturation point is at C = 50.
 - For C = 100; the model performance is not affected.
 - The model does not appear to be overfitting as the training and testing accuracies are consistent.
+Plotted a graph for all combinations of features, showing the sum data distinction through 2D space as mentioned in the statement.
 
 The best accuracy we're getting is -
 For C = 50 -----
