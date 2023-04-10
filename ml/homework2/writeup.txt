@@ -5,7 +5,13 @@ Comments are provided and explained with Markdowns
 
 1 - Support Vector Machines
 ---------------------------
+---- Part A ----
 
+
+
+
+---- Part B ----
+Reference - "Learning from Data" by Yaser S. Abu-Mostafa, Malik Magdon-Ismail, and Hsuan-Tien Lin.
 
 
 
