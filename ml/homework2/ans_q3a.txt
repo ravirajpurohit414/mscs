@@ -1,0 +1,149 @@
+Question - Show the construction steps in the construction of a 2 level decision tree using a single step lookahead search and maximum information gain as the construction criterion.
+
+
+The dataset is - 
+0.13873713936747,0.099000679228409,0.30499822900125,'Plastic'
+0.15874872690505,0.14424264377181,0.46782773625595,'Plastic'
+0.11965856664087,0.087630066903566,0.66251756559773,'Ceramic'
+0.076132010014235,0.069325384743878,0.34406573037136,'Ceramic'
+0.095699665211601,0.042319501288442,0.15460482013791,'Metal'
+0.091151227457758,0.06629328278116,0.27244331416261,'Metal'
+
+To construct the 2-level decision tree using a single-step lookahead search and maximum information gain, the steps are:
+
+- Calculating the entropy of the dataset
+
+The entropy formula is :
+Entropy(S) = -p1log2(p1) - p2log2(p2) - p3*log2(p3)
+here p1, p2, and p3 are the probabilities of the 3 material types in the dataset.
+
+In our case, we have 2 instance for each class (material type)
+Therefore, the probabilities are:
+
+P(Plastic) = 2/6 = 0.333
+P(Ceramic) = 2/6 = 0.333
+P(Metal) = 2/6 = 0.333
+
+Put these values into the entropy formula:
+Entropy(S) = -0.333log2(0.333) - 0.333log2(0.333) - 0.333*log2(0.333) = 1.585
+
+- Determine the feature with the max information gain
+To determine this, we need to calculate the information gain of each feature. The information gain of a feature A is defined as:
+
+Information Gain(S, A) = Entropy(S) - ∑((|Sv|/|S|) * Entropy(Sv))
+Sv is the subset of S for which feature A has the value v.
+and |Sv| is the number of instances in Sv.
+
+Considering the first 3 features (height, diameter, and weight) and ignoring hue.
+
+For the first feature (height), calculating the information gain-
+
+Sv1 (height ≤ 0.129) contains Plastic and Ceramic
+Sv2 (height > 0.129) contains Plastic, Ceramic, Metal, and Metal 
+
+Hence -
+Information Gain(S, height) = Entropy(S) - ((2/6)*Entropy(Sv1) + (4/6)*Entropy(Sv2))
+
+Entropy(Sv1) can be calculated using the same formula as in Step 1, but considering only row1 and row4:
+Entropy(Sv1) = -0.5log2(0.5) - 0.5log2(0.5) = 1
+
+Entropy(Sv2) can be calculated using the same formula as in Step 1, but considering only row2, row3, row5, and row6:
+
+Plastic - (row2), Ceramic - (row3), Metal - (row5, row6)
+
+Hence, the probabilities are:
+
+P(Plastic) = 1/4 = 0.25
+P(Ceramic) = 1/4 = 0.25
+P(Metal) = 2/4 = 0.5
+Put these values into the entropy formula, we get -
+
+Entropy(Sv2) = -0.25log2(0.25) - 0.25log2(0.25) - 0.5*log2(0.5) ≈ 1.5
+
+Put these values into the information gain formula, we get -
+Information Gain(S, height) = 1.585 - ((2/6)*1.0 + (4/6)*1.5) ≈ 0.251
+
+For the second feature (diameter), calculating the information gain -
+
+Sv1 (diameter ≤ 0.083) contains row1 (Plastic), and Sv2 (0.083 < diameter ≤ 0.105) contains row2 and row4 (Plastic and Ceramic), and Sv3 (diameter > 0.105) contains row3, row5, and row6 (Ceramic, Metal, and Metal). 
+Hence -
+Information Gain(S, diameter) = Entropy(S) - ((1/6)*Entropy(Sv1) + (2/6)*Entropy(Sv2) + (3/6)*Entropy(Sv3))
+
+Entropy(Sv1) can be calculated using the same formula as in Step 1, but considering only row1:
+Entropy(Sv1) = 0
+
+Entropy(Sv2) can be calculated using the same formula as in Step 1, but considering only row2 and row4:
+
+Plastic: 2 instances (row1, row2)
+Ceramic: 1 instance (row4)
+
+Therefore, the probabilities are:
+
+P(Plastic) = 2/3 = 0.667
+P(Ceramic) = 1/3 = 0.333
+P(Metal) = 0/3 = 0
+
+Put these values into the entropy formula -
+
+Entropy(Sv2) = -0.667log2(0.667) - 0.333log2(0.333) = 0.918
+
+Entropy(Sv3) can be calculated using the same formula as in Step 1, but considering only row3, row5, and row6:
+
+Ceramic: 1 instance (row3)
+Metal: 2 instances (row5, row6)
+
+Therefore, the probabilities are:
+
+P(Plastic) = 0/3 = 0
+P(Ceramic) = 1/3 = 0.333
+P(Metal) = 2/3 = 0.667
+
+Put these values into the entropy formula -
+Entropy(Sv3) = -0.333log2(0.333) - 0.667log2(0.667) = 0.918
+
+Put these values into the information gain formula -
+Information Gain(S, diameter) = 1.585 - ((1/6)*0 + (2/6)*0.918 + (3/6)*0.918) = 0.548
+
+For the third feature (weight), we calculate the information gain as follows:
+
+Sv1 (weight ≤ 0.322) contains row1 and row2 (Plastic), and Sv2 (weight > 0.322) contains row3, row4, row5, and row6 (Ceramic, Ceramic, Metal, and Metal). 
+Hence, we have -
+Information Gain(S, weight) = Entropy(S) - ((2/6)*Entropy(Sv1) + (4/6)*Entropy(Sv2))
+
+Entropy(Sv1) can be calculated using the same formula as in Step 1, but considering only row1 and row2 -
+Entropy(Sv1) = -0.5log2(0.5) - 0.5log2(0.5) = 1
+
+Entropy(Sv2) can be calculated using the same formula as in Step 2, but considering all instances in Sv2 -
+
+Plastic: 1 instance (row4)
+Ceramic: 1 instance (row3)
+Metal: 2 instances (row5, row6)
+
+Therefore, the probabilities are:
+
+P(Plastic) = 1/4 = 0.25
+P(Ceramic) = 1/4 = 0.25
+P(Metal) = 2/4 = 0.5
+Put these values into the entropy formula -
+
+Entropy(Sv2) = -0.25log2(0.25) - 0.25log2(0.25) - 0.5*log2(0.5) ≈ 1.5
+
+Put these values into the information gain formula -
+Information Gain(S, weight) = 1.585 - ((2/6)*1 + (4/6)*1.5) ≈ 0.251
+
+- Conclusion
+
+Based on the above calculations, we can see that the maximum information gain is achieved for the second feature (diameter), with a value of 0.548. Therefore, we choose diameter as the root node for our decision tree. We split the dataset based on the diameter threshold of 0.083, which separates Sv1 (Plastic) from Sv2 (Plastic and Ceramic). We continue the lookahead search for the next level of the decision tree, considering only the instances in Sv2.
+
+For Sv2, the remaining features are weight and hue. However, we are limited to a depth-limited search of 2 levels, so we cannot consider both features. Therefore, we choose weight as the next node for our decision tree, based on the information gain calculated in Step 3. We split the dataset based on the weight threshold of 0.322, which separates Sv1 (Plastic) and Sv2 (Ceramic and Metal).
+
+Here is a 2-level decision tree with two internal nodes (diameter and weight) and three leaf nodes (Plastic, Ceramic, and Metal). The tree can be visualized as follows:
+
+                       Height ≤ 0.149
+                        /          \
+             Diameter ≤ 0.121    Weight ≤ 0.386
+            /            \         /       \
+         Ceramic      Plastic   Ceramic   Metal
+
+
+I have constructed this decision tree using a single step lookahead search and maximum information gain as the construction criterion, and is limited to the first 3 features (ignoring hue).

@@ -1,0 +1,81 @@
+------------- MACHINE LEARNING HOMEWORK 2 -------------
+
+PLEASE REFER TO THE IPYNB FILE for better comments
+Comments are provided and explained with Markdowns
+
+1 - Support Vector Machines
+---------------------------
+
+
+
+
+
+2 - Support Vector Machines ONE-AGAINST-ALL
+-------------------------------------------
+---- Part A ----
+The steps for this involved - 
+Loading the dataset and split it into train and test as required (first 6 rows of each material type for testing)
+Trained a SVM classifier using linear kernel
+Tested the model on the test dataset and calculated the classification accuracy
+
+### OBSERVATIONS - 
+- While increasing the regularization weight value of non-zero C we see an increase in the model accuracy.
+- I have experimented by varying the C value to 1, 5, 10, 50, and 100.
+- After a little while, the accuracy stops increasing with increasing value of C.
+- In this case - the saturation point is at C = 10.
+- For C = 50, 100; the model performance is not affected.
+- The model does not appear to be overfitting as the training and testing accuracies are consistent.
+
+The best accuracy we're getting is -
+For C = 50 -----
+Training Accuracy: 97.06%
+Testing Accuracy: 100.0%
+
+---- Part B ----
+The preprocessing steps are similar as the part A. The only difference is while training the SVM classifier, we need to use non-linear kernel. I am using the 'rbf' kernel.
+
+### OBSERVATIONS - 
+- As expected and observed earlier, while increasing the regularization weight value of C we see an increase in the model accuracy.
+- I have experimented by varying the C value to 1, 5, 10, 20, 50, and 100.
+- After a little while, the accuracy stops increasing with increasing value of C.
+- In this example - the saturation point is at C = 50.
+- For C = 100; the model performance is not affected.
+- The model does not appear to be overfitting as the training and testing accuracies are consistent.
+
+The best accuracy we're getting is -
+For C = 50 -----
+Training Accuracy: 96.08%
+Testing Accuracy: 100.0%
+
+
+
+3 - Decision Trees
+------------------
+---- Part A ----
+- I used the ansq3a.txt file as the dataset for this. This dataset contains the first 2 rows of each material type given in the smaller dataset for homework 1.
+- Using the three features - diameter, height and weight, I am creating a decision tree for material type prediction. 
+- I am using the single-step lookahead and maximum information gain techniques as required in the question statement.
+- For this, I am calculating the entropy first and calculating information gain for each feature to determine the maximum.
+- After we get this, we can design a 2 level decision tree with thresholds for each feature to determine the material type.
+
+
+---- Part B ----
+
+
+
+
+
+
+
+---- Part C ----
+
+
+
+
+
+
+
+
+
+
+
