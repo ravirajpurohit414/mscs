@@ -11,20 +11,21 @@ UTA ID
 Files description
 -----------------
 
-data.txt - contains the dataset generated for question 1; provided with homework 2.
-data_old.txt - contains the larger dataset used in homework 1; will be used for question 2 and question 3b and 3c.
-data_q3a.txt - contains the smaller dataset used in homework 1; will be used for question 3a.
-main.ipynb - is an interactive python notebook containing the script for homework 2; It also contains the output, comments and markdowns for each step.
-main.py - main file to run with python script
+data/data_q1.txt -- contains the dataset generated for question 1; provided with homework 2.
+data/data_old.txt - contains the larger dataset used in homework 1; will be used for question 2 and question 3b and 3c.
+data/data_q3a.txt - contains the smaller dataset used in homework 1; will be used for question 3a.
 
+main.ipynb -------- is an interactive python notebook containing the script for homework 2; It also contains the output, comments and markdowns for each step.
+main.py ----------- is the python script containing the code for homework 2 coding problems.
+ans_q3a.txt ------- is the answer of Question 3 - Part A, in a text file
 
-requirements.txt - is the file mentioning the libraries with version used for code development for this assignment.
-writeup.txt - is the file with description of the homework and steps while implementation.
+requirements.txt -- is the file mentioning the libraries with version used for code development for this assignment.
 
-lin_svm_clf.jpeg - output of linear svm model for problem 2a
-non_lin_svm_clf.jpeg - output of non-linear svm model for problem 2b
+hw2_write_up.pdf ------- is the file with description of the homework and steps while implementation.
 
-plot_1b.jpeg - output of problem 1b
+outputs/plot_1b.jpeg   ------- output of problem 1b
+outputs/lin_svm_clf.jpeg ----- output of linear svm model for problem 2a
+outputs/non_lin_svm_clf.jpeg - output of non-linear svm model for problem 2b
 
 Run the program by
 ------------------

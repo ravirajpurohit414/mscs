@@ -1,14 +1,26 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[122]:
+# In[1]:
 
 
 import numpy as np
-import math
 from sklearn.svm import SVC
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+
+
+# In[2]:
+
+
+import session_info
+
+
+# In[3]:
+
+
+## to figure out which library and respective versions are used for development
+session_info.show()
 
 
 # ## ---------------------------- QUESTION 1-A ----------------------------
@@ -48,84 +60,24 @@ from mpl_toolkits.mplot3d import Axes3D
 # The constraints on α are: αi >= 0, and Σ αi yi = 0, for i = 1,2,...,n.
 
 # ## ---------------------------- QUESTION 1-B ----------------------------
-# The SMO (Sequential Minimal Optimization) algorithm is a widely used optimization technique for training support vector machines (SVMs). Here are the general steps to perform 3 iterations of the SMO algorithm on this data:
 # 
-# Step 1: Initialize α, w, and b
+# The Sequential Minimal Optimization (SMO) algorithm is an efficient method for training Support Vector Machines (SVMs). The basic steps of the SMO algorithm are -
 # 
-# Set all α_i = 0
-# Initialize b = 0
-# Initialize w = 0
-# Step 2: Pick two α parameters for optimization
+# 1. Initialize the Lagrange multipliers (alphas) to zero for all training instances.
+# 2. Choose two Lagrange multipliers (alpha_i and alpha_j) to optimize in the current iteration.
+# 3. Compute the errors for these two instances using the current model.
+# 4. Select the two instances to optimize based on a heuristic.
+# 5. Optimize the two Lagrange multipliers using an analytical formula, subject to the constraints of the problem.
+# 6. Update the threshold (b) based on the new Lagrange multipliers and their corresponding support vectors.
+# 7. Repeat steps 2-6 until convergence is achieved or a maximum number of iterations is reached.
+# 8. During each iteration of the algorithm, the chosen instances are used to update the model, which is used to compute the errors and select the next instances to optimize. The algorithm stops when convergence is achieved, meaning that the Lagrange multipliers do not change significantly between iterations, or when a maximum number of iterations is reached. At this point, the final model is obtained using the Lagrange multipliers and support vectors.
 # 
-# Choose one α_i from C1 and another α_j from C2, where α_i and α_j are not equal
-# Compute the error for α_i and α_j: E_i = f(x_i) - y_i and E_j = f(x_j) - y_j, where f(x) = w·x + b and y is the target value (+1 or -1)
-# Step 3: Compute the new unconstrained (unclipped) α values that maximize the modified performance function
-# 
-# Compute η = K(x_i, x_i) + K(x_j, x_j) - 2K(x_i, x_j), where K is the kernel function (in this case, we can use the linear kernel)
-# Compute the new unconstrained value for α_j: α_j_new_unc = α_j + y_j(E_i - E_j)/η
-# Compute the new unconstrained value for α_i: α_i_new_unc = α_i + y_iy_j(α_j - α_j_new_unc)
-# Step 4: Clip the new α values to ensure that both α values are ≥ 0
-# 
-# Clip α_i_new to be between 0 and C_i
-# Clip α_j_new to be between 0 and C_j, where C_i and C_j are the regularization parameters for the two classes (in this case, we can assume C_i = C_j = 1)
-# Step 5: Compute the new value for b
-# 
-# If 0 < α_i_new < C_i and 0 < α_j_new < C_j, then set b_new = b - E_i - y_iK(x_i, x_i)(α_i_new - α_i) - y_jK(x_i, x_j)(α_j_new - α_j)
-# Otherwise, if either α_i_new = 0 or α_i_new = C_i, then set b_new = b - E_i - y_iK(x_i, x_i)(α_i_new - α_i) - y_jK(x_i, x_j)(α_j_new - α_j) + (y_i - y_j)ξ_i
-# Otherwise, if either α_j_new = 0 or α_j_new = C_j, then set b_new = b - E_i - y_iK(x_i, x_i)(α_i_new - α_i) - y_jK(x_i, x_j)(α_j_new - α_j) + (y_i - y_j)ξ_j
-# where ξ_i = f(x_i) + b_new - y_i and ξ_j = f(x_j) + b_new - y_j are the new values of the functional margin for the two support vectors
-# Step 6: Update w to reflect the new α values
-# 
-# Compute w_new = sum(α_i_newy_ix_i) for all support vectors with non-zero α values
-# Step 7: Repeat steps 2-6 for a total of 3 iterations, or until convergence
-# 
-# Unfortunately, I cannot provide a plot of the data points with the decision boundary described by the values of w and b that you obtained as I'm a text-based AI language model. However, you can plot the data and decision boundary using Python's Matplotlib library or any other suitable
-# 
-# 
-# 
-# 
-# 
+# Reference - "Learning from Data" by Yaser S. Abu-Mostafa, Malik Magdon-Ismail, and Hsuan-Tien Lin.
 
-# In[ ]:
+# In[23]:
 
 
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[205]:
-
-
-def read_data(filename='./data_q1.txt'):
+def read_data(filename='./data/data_q1.txt'):
     """
     Load the dataset for question 1 provided with the homework.
     
@@ -149,12 +101,183 @@ def read_data(filename='./data_q1.txt'):
     return np.array(data), np.array(labels)
 
 
-# In[116]:
+# In[5]:
 
 
 data_q1, labels_q1 = read_data()
 
-data_q1, labels_q1
+print(data_q1) 
+print(labels_q1)
+
+
+# In[18]:
+
+
+"""
+------------- Plotting the decision boundary for 3 SMO iterations -----------
+"""
+
+
+# In[22]:
+
+
+# Data points and labels
+X = data_q1
+y = np.array([1 if i==1 else -1 for i in labels_q1])
+
+# Initialize parameters
+m, n = X.shape
+alphas = np.zeros(m)
+b = 1
+tol = 0.001
+C = float('inf')
+passes = 0
+max_passes = 10
+
+# Define kernel
+def lin_kernel(x1, x2):
+    return np.dot(x1, x2)
+
+# Compute decision boundary
+def dec_fn(alphas, X, y, x, b):
+    return np.sum(alphas * y * lin_kernel(X, x)) + b
+
+# Define clipping
+def clip(alpha, H, L):
+    if alpha > H:
+        alpha = H
+    if alpha < L:
+        alpha = L
+    return alpha
+
+# Performing 1st iteration of the SMO algorithm
+i = 0
+j = 1
+Ei = dec_fn(alphas, X, y, X[i], b) - y[i]
+Ej = dec_fn(alphas, X, y, X[j], b) - y[j]
+alpha_i_old, alpha_j_old = alphas[i], alphas[j]
+if y[i] != y[j]:
+    L = max(0, alphas[j] - alphas[i])
+    H = min(C, C + alphas[j] - alphas[i])
+else:
+    L = max(0, alphas[i] + alphas[j] - C)
+    H = min(C, alphas[i] + alphas[j])
+if L == H:
+    pass
+eta = 2 * lin_kernel(X[i], X[j]) - lin_kernel(X[i], X[i]) - lin_kernel(X[j], X[j])
+if eta >= 0:
+    pass
+alphas[j] -= y[j] * (Ei - Ej) / eta
+alphas[j] = clip(alphas[j], H, L)
+if abs(alphas[j] - alpha_j_old) < tol:
+    alphas[j] = alpha_j_old
+alphas[i] += y[i] * y[j] * (alpha_j_old - alphas[j])
+b1 = b - Ei - y[i] * (alphas[i] - alpha_i_old) * lin_kernel(X[i], X[i]) - y[j] * (alphas[j] - alpha_j_old) * lin_kernel(X[i], X[j])
+b2 = b - Ej - y[i] * (alphas[i] - alpha_i_old) * lin_kernel(X[i], X[j]) - y[j] * (alphas[j] - alpha_j_old) * lin_kernel(X[j], X[j])
+if alphas[i] > 0 and alphas[i] < C:
+    b = b1
+elif alphas[j] > 0 and alphas[j] < C:
+    b = b2
+else:
+    b = (b1 + b2) / 2
+
+plt.figure(figsize=(15,6))
+
+plt.subplot(131)
+plt.title('Decision Boundary, Iteration 1')    
+    
+plt.scatter(X[:, 0], X[:, 1], c=y)
+ax = plt.gca()
+xlim = ax.get_xlim()
+ylim = ax.get_ylim()
+
+xx = np.linspace(xlim[0], xlim[1], 30)
+yy = np.linspace(ylim[0], ylim[1], 30)
+YY, XX = np.meshgrid(yy, xx)
+xy = np.vstack([XX.ravel(), YY.ravel()]).T
+Z = np.zeros_like(xy[:, 0])
+for i in range(len(xy)):
+    Z[i] = dec_fn(alphas, X, y, xy[i], b)
+
+Z = Z.reshape(XX.shape)
+ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
+ax.set_xlim(xlim)
+ax.set_ylim(ylim)
+
+# plt.show()
+
+# Perform iteration 2 of SMO algorithm
+i = 2
+j = 3
+Ei = dec_fn(alphas, X, y, X[i], b) - y[i]
+Ej = dec_fn(alphas, X, y, X[j], b) - y[j]
+alpha_i_old, alpha_j_old = alphas[i], alphas[j]
+if y[i] != y[j]:
+    L = max(0, alphas[j] - alphas[i])
+    H = min(C, C + alphas[j] - alphas[i])
+else:
+    L = max(0, alphas[i] + alphas[j] - C)
+    H = min(C, alphas[i] + alphas[j])
+if L == H:
+    pass
+eta = 2 * lin_kernel(X[i], X[j]) - lin_kernel(X[i], X[i]) - lin_kernel(X[j], X[j])
+if eta >= 0:
+    pass
+alphas[j] -= y[j] * (Ei - Ej) / eta
+alphas[j] = clip(alphas[j], H, L)
+if abs(alphas[j] - alpha_j_old) < tol:
+    alphas[j] = alpha_j_old
+alphas[i] += y[i] * y[j] * (alpha_j_old - alphas[j])
+b1 = b - Ei - y[i] * (alphas[i] - alpha_i_old) * lin_kernel(X[i], X[i]) - y[j] * (alphas[j] - alpha_j_old) * lin_kernel(X[i], X[j])
+b2 = b - Ej - y[i] * (alphas[i] - alpha_i_old) * lin_kernel(X[i], X[j]) - y[j] * (alphas[j] - alpha_j_old) * lin_kernel(X[j], X[j])
+if alphas[i] > 0 and alphas[i] < C:
+    b = b1
+elif alphas[j] > 0 and alphas[j] < C:
+    b = b2
+else:
+    b = (b1 + b2) / 2
+
+# Compute new decision boundary
+w = np.sum(alphas * y * X.T, axis=1)
+b = np.mean([dec_fn(alphas, X, y, x, b) - y for x, y in zip(X, y)])
+
+# Plot data points and decision boundary
+plt.subplot(132)
+plt.title('Decision Boundary, Iteration 2')
+
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.Paired, edgecolors='k')
+ax = plt.gca()
+xlim = ax.get_xlim()
+ylim = ax.get_ylim()
+xx, yy = np.meshgrid(np.linspace(xlim[0], xlim[1], 100), np.linspace(ylim[0], ylim[1], 100))
+xy = np.vstack([xx.ravel(), yy.ravel()]).T
+Z = np.dot(xy, w) + b
+Z = np.reshape(Z, xx.shape)
+ax.contour(xx, yy, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
+# plt.show()
+
+# Compute final decision boundary function
+w = np.sum(alphas.reshape(-1, 1) * y.reshape(-1, 1) * X, axis=0)
+b = 1/y[0] - np.dot(w, X[0])
+
+# Plot data points and decision boundary
+plt.subplot(133)
+plt.title('Decision Boundary, Iteration 3')
+plt.scatter(X[y==-1, 0], X[y==-1, 1], label='Class C1')
+plt.scatter(X[y==1, 0], X[y==1, 1], label='Class C2')
+
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
+Z = np.sign(np.dot(np.c_[xx.ravel(), yy.ravel()], w) + b)
+Z = Z.reshape(xx.shape)
+
+plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='black')
+plt.xlim(x_min, x_max)
+plt.ylim(y_min, y_max)
+
+plt.savefig('./outputs/plot_1b.jpeg')
+plt.show()
 
 
 # In[ ]:
@@ -165,16 +288,16 @@ data_q1, labels_q1
 
 # ## ---------------------------- QUESTION 2 ----------------------------
 
-# In[206]:
+# In[6]:
 
 
 ## load the larger dataset from homework 1
-with open('data_old.txt') as f:
+with open('./data/data_old.txt') as f:
     data_old = f.readlines()
     f.close()
 
 
-# In[207]:
+# In[7]:
 
 
 def format_data(data_old):
@@ -206,13 +329,13 @@ def format_data(data_old):
     return np.array(feat_array), np.array(label_array)
 
 
-# In[208]:
+# In[8]:
 
 
 features, labels = format_data(data_old)
 
 
-# In[209]:
+# In[9]:
 
 
 def train_test_split(features, labels):
@@ -262,13 +385,13 @@ def train_test_split(features, labels):
     return train_features, test_features, train_labels, test_labels
 
 
-# In[210]:
+# In[10]:
 
 
 train_features, test_features, train_labels, test_labels = train_test_split(features, labels)
 
 
-# In[211]:
+# In[11]:
 
 
 def model_svm_iters(train_features, 
@@ -296,6 +419,8 @@ def model_svm_iters(train_features,
     perf_comp - dictionary with saved model, configuration, training and testing accuracies to compare later
     
     """
+    print(f'Performance comparison for {kernal} kernal SVM\n')
+    
     # Train the SVM model with a non-zero regularization weight C
     for c in c_list:
         if kernal == 'rbf':
@@ -334,7 +459,13 @@ def model_svm_iters(train_features,
 # - Test the model on the testing set and calculate the classification accuracy.
 # - Visualize the decision boundary and the support vectors.
 
-# In[212]:
+# In[12]:
+
+
+print('------------------------------------ QUESTION 2-A ------------------------------------')
+
+
+# In[ ]:
 
 
 ## data edit for this question
@@ -342,7 +473,7 @@ train_labels_edit = [i if i=='Plastic' else 'Other' for i in train_labels]
 test_labels_edit = [i if i=='Plastic' else 'Other' for i in test_labels]
 
 
-# In[213]:
+# In[ ]:
 
 
 perf_comp = {'model':[],'c':[],'acc_train':[],'acc_test':[]}
@@ -368,34 +499,28 @@ perf_comp = model_svm_iters(train_features,
 # 
 # - Also, the model does not appear to be overfitting as the training and testing accuracies are consistent.
 
-# In[214]:
+# In[ ]:
 
 
-labels_all = np.concatenate([train_labels_edit, test_labels_edit])
-features_all = np.concatenate([train_features, test_features])
+print(perf_comp['acc_train'])
+print(perf_comp['acc_test'])
 
 
-# In[215]:
-
-
-perf_comp['acc_train'], perf_comp['acc_test']
-
-
-# In[216]:
+# In[ ]:
 
 
 ## choose the best model
 clf = perf_comp['model'][2]
 
 
-# In[217]:
+# In[ ]:
 
 
 is_plastic = np.array(train_labels_edit).ravel()=='Plastic'
 is_other = np.array(train_labels_edit).ravel()=='Other'
 
 
-# In[218]:
+# In[ ]:
 
 
 # Plotting 2D projections of data and decision boundary
@@ -442,25 +567,19 @@ plt.plot(xx,yy,"b-")
 plt.plot(train_features[:,1][is_plastic], train_features[:,2][is_plastic], "go",label="plastic")
 plt.plot(train_features[:,1][is_other], train_features[:,2][is_other], "ro",label="not plastic")
 
-plt.savefig("./lin_svm_clf.jpeg")
+plt.savefig("./outputs/lin_svm_clf.jpeg")
 plt.show()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
 
 # ## ------------------------------------ QUESTION 2-B ------------------------------------
 
-# In[219]:
+# In[ ]:
+
+
+print('------------------------------------ QUESTION 2-B ------------------------------------')
+
+
+# In[ ]:
 
 
 perf_comp = {'model':[],'c':[],'acc_train':[],'acc_test':[]}
@@ -475,23 +594,25 @@ perf_comp = model_svm_iters(train_features,
                             perf_comp=perf_comp)
 
 
-# In[220]:
+# In[ ]:
 
 
-perf_comp['acc_train'], perf_comp['acc_test']
+print(perf_comp['acc_train'])
+print(perf_comp['acc_test'])
 
 
-# In[221]:
+# In[ ]:
 
 
 ## choose the best model
 clf_nl = perf_comp['model'][4]
 
 
-# In[222]:
+# In[ ]:
 
 
 plt.figure(figsize=(15,6))
+plt.suptitle("Non-Linear (rbf) SVM decision boundary")
 
 ax_pt_1 = np.linspace(train_features[:,0].min(), train_features[:,0].max(), 100).T
 ax_pt_2 = np.linspace(train_features[:,1].min(), train_features[:,1].max(), 100).T
@@ -536,11 +657,11 @@ plt.plot(train_features[:,1][is_plastic], train_features[:,2][is_plastic], "go",
 plt.plot(train_features[:,1][is_other], train_features[:,2][is_other], "ro",label="not plastic")
 plt.legend(loc="lower right")
 
-plt.savefig("./non_lin_svm_clf.jpeg")
+plt.savefig("./outputs/non_lin_svm_clf.jpeg")
 plt.show()
 
 
-# ### OBSERVATION - 
+# ### OBSERVATIONS - 
 # - As expected and observed earleir, while increasing the regularization weight value of C we see an increase in the model accuracy.
 # 
 # - I have experimented by varying the C value to __1, 5, 10, 20, 50, and 100.__
@@ -557,46 +678,75 @@ plt.show()
 
 
 
+# ## ------------------------------------ QUESTION 3-A ------------------------------------
+# 
+# Submitted as a seperate file
+
+# In[ ]:
+
+
+print('------------------------------------ QUESTION 3-A ------------------------------------')
+print('Submitted as a seperate file \n')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # ## ------------------------------------ QUESTION 3-B ------------------------------------
 
-# In[223]:
+# In[ ]:
+
+
+print('------------------------------------ QUESTION 3-B ------------------------------------')
+
+
+# In[ ]:
 
 
 import numpy as np
 
-def entropy(y):
+def calc_entropy(y):
     """
     Calculates the entropy of a label array.
     """
     _, counts = np.unique(y, return_counts=True)
-    probabilities = counts / len(y)
-    return -np.sum(probabilities * np.log2(probabilities))
+    probs = counts / len(y)
+    return -np.sum(probs * np.log2(probs))
 
-def information_gain(X, y, feature_index, threshold):
+def information_gain(X, y, feature_index, thresh):
     """
-    Calculates the information gain of a split on a given feature and threshold.
+    Calculates the information gain of a split on a given feature and thresh.
     """
-    left_mask = X[:, feature_index] <= threshold
-    right_mask = X[:, feature_index] > threshold
-    left_y, right_y = y[left_mask], y[right_mask]
-    left_entropy, right_entropy = entropy(left_y), entropy(right_y)
-    left_size, right_size = len(left_y), len(right_y)
-    total_entropy = (left_size / len(y)) * left_entropy + (right_size / len(y)) * right_entropy
-    return entropy(y) - total_entropy
+    l_mask = X[:, feature_index] <= thresh
+    r_mask = X[:, feature_index] > thresh
+    l_y, r_y = y[l_mask], y[r_mask]
+    l_entropy, r_entropy = calc_entropy(l_y), calc_entropy(r_y)
+    l_size, r_size = len(l_y), len(r_y)
+    total_entropy = (l_size / len(y)) * l_entropy + (r_size / len(y)) * r_entropy
+    return calc_entropy(y) - total_entropy
 
 def find_best_split(X, y):
     """
-    Finds the best feature and threshold to split the data.
+    Finds the best feature and thresh to split the data.
     """
-    best_feature_index, best_threshold, best_info_gain = None, None, -1
+    best_feature_index, best_thresh, best_info_gain = None, None, -1
     for feature_index in range(X.shape[1]):
         unique_values = np.unique(X[:, feature_index])
         thresholds = (unique_values[:-1] + unique_values[1:]) / 2
-        for threshold in thresholds:
-            info_gain = information_gain(X, y, feature_index, threshold)
+        for thresh in thresholds:
+            info_gain = information_gain(X, y, feature_index, thresh)
             if info_gain > best_info_gain:
-                best_feature_index, best_threshold, best_info_gain = feature_index, threshold, info_gain
-    return best_feature_index, best_threshold
+                best_feature_index, best_thresh, best_info_gain = feature_index, thresh, info_gain
+    return best_feature_index, best_thresh
 
 def build_tree(X, y, depth=0, max_depth=None):
     """
@@ -604,21 +754,21 @@ def build_tree(X, y, depth=0, max_depth=None):
     """
     if depth == max_depth or len(np.unique(y)) == 1:
         return np.bincount(y).argmax()
-    feature_index, threshold = find_best_split(X, y)
-    left_mask = X[:, feature_index] <= threshold
-    right_mask = X[:, feature_index] > threshold
-    left_subtree = build_tree(X[left_mask], y[left_mask], depth+1, max_depth)
-    right_subtree = build_tree(X[right_mask], y[right_mask], depth+1, max_depth)
-    return (feature_index, threshold, left_subtree, right_subtree)
+    feature_index, thresh = find_best_split(X, y)
+    l_mask = X[:, feature_index] <= thresh
+    r_mask = X[:, feature_index] > thresh
+    l_subtree = build_tree(X[l_mask], y[l_mask], depth+1, max_depth)
+    r_subtree = build_tree(X[r_mask], y[r_mask], depth+1, max_depth)
+    return (feature_index, thresh, l_subtree, r_subtree)
     
 def predict(tree, example):
     """Predicts the labels of an array of single data point using a decision tree."""
     if type(tree) == tuple:
-        attribute, threshold, left_subtree, right_subtree = tree
-        if example[attribute] <= threshold:
-            return predict(left_subtree, example)
+        attribute, thresh, l_subtree, r_subtree = tree
+        if example[attribute] <= thresh:
+            return predict(l_subtree, example)
         else:
-            return predict(right_subtree, example)
+            return predict(r_subtree, example)
     else:
         return tree
 
@@ -632,7 +782,13 @@ def predict_all(tree, X):
 
 # ## ------------------------------------ QUESTION 3-C ------------------------------------
 
-# In[224]:
+# In[ ]:
+
+
+print('------------------------------------ QUESTION 3-C ------------------------------------')
+
+
+# In[ ]:
 
 
 def labels_str_to_int(labels):
@@ -659,14 +815,14 @@ def labels_str_to_int(labels):
     return np.array(labels_int)
 
 
-# In[225]:
+# In[ ]:
 
 
 train_labels_int = labels_str_to_int(train_labels)
 test_labels_int = labels_str_to_int(test_labels)
 
 
-# In[226]:
+# In[ ]:
 
 
 perf_comp_dt = {'model':[],'max_depth':[],'acc_train':[],'acc_test':[]}
@@ -693,7 +849,7 @@ for max_depth in range(1,9):
     perf_comp_dt['acc_test'].append(acc_test)
 
 
-# In[227]:
+# In[ ]:
 
 
 for i in zip(perf_comp_dt['acc_train'], perf_comp_dt['acc_test'], perf_comp_dt['max_depth']):
@@ -707,15 +863,3 @@ for i in zip(perf_comp_dt['acc_train'], perf_comp_dt['acc_test'], perf_comp_dt['
 # - We can also observe that for max depths 2,3,4,5 the testing accuracies are consistent.
 # - This can mean that the features at these depths are not learning meaningful information for testing data.
 # - Finally, the model seems to learn well at max_depth of 6 and 7 and does not appear to be overfitting as the training and testing accuracies are consistent with each other.
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
