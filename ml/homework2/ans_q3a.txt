@@ -1,6 +1,5 @@
 Question - Show the construction steps in the construction of a 2 level decision tree using a single step lookahead search and maximum information gain as the construction criterion.
 
-
 The dataset is - 
 0.13873713936747,0.099000679228409,0.30499822900125,'Plastic'
 0.15874872690505,0.14424264377181,0.46782773625595,'Plastic'
@@ -12,7 +11,6 @@ The dataset is -
 To construct the 2-level decision tree using a single-step lookahead search and maximum information gain, the steps are:
 
 - Calculating the entropy of the dataset
-
 The entropy formula is :
 Entropy(S) = -p1log2(p1) - p2log2(p2) - p3*log2(p3)
 here p1, p2, and p3 are the probabilities of the 3 material types in the dataset.
@@ -120,7 +118,6 @@ Ceramic: 1 instance (row3)
 Metal: 2 instances (row5, row6)
 
 Therefore, the probabilities are:
-
 P(Plastic) = 1/4 = 0.25
 P(Ceramic) = 1/4 = 0.25
 P(Metal) = 2/4 = 0.5
@@ -144,6 +141,5 @@ Here is a 2-level decision tree with two internal nodes (diameter and weight) an
              Diameter ≤ 0.121    Weight ≤ 0.386
             /            \         /       \
          Ceramic      Plastic   Ceramic   Metal
-
 
 I have constructed this decision tree using a single step lookahead search and maximum information gain as the construction criterion, and is limited to the first 3 features (ignoring hue).

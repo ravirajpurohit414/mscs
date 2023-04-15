@@ -1,27 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import numpy as np
 from sklearn.svm import SVC
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
-
-# In[2]:
-
-
 import session_info
-
-
-# In[3]:
-
 
 ## to figure out which library and respective versions are used for development
 session_info.show()
-
 
 # ## ---------------------------- QUESTION 1-A ----------------------------
 # The optimization function for the linear maximum margin optimization problem is given by:
@@ -74,9 +61,6 @@ session_info.show()
 # 
 # Reference - "Learning from Data" by Yaser S. Abu-Mostafa, Malik Magdon-Ismail, and Hsuan-Tien Lin.
 
-# In[23]:
-
-
 def read_data(filename='./data/data_q1.txt'):
     """
     Load the dataset for question 1 provided with the homework.
@@ -100,26 +84,14 @@ def read_data(filename='./data/data_q1.txt'):
             labels.append(label)
     return np.array(data), np.array(labels)
 
-
-# In[5]:
-
-
 data_q1, labels_q1 = read_data()
 
 print(data_q1) 
 print(labels_q1)
 
-
-# In[18]:
-
-
 """
 ------------- Plotting the decision boundary for 3 SMO iterations -----------
 """
-
-
-# In[22]:
-
 
 # Data points and labels
 X = data_q1
@@ -204,9 +176,7 @@ ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--'
 ax.set_xlim(xlim)
 ax.set_ylim(ylim)
 
-# plt.show()
-
-# Perform iteration 2 of SMO algorithm
+# Performing iteration 2 of SMO algorithm
 i = 2
 j = 3
 Ei = dec_fn(alphas, X, y, X[i], b) - y[i]
@@ -254,7 +224,6 @@ xy = np.vstack([xx.ravel(), yy.ravel()]).T
 Z = np.dot(xy, w) + b
 Z = np.reshape(Z, xx.shape)
 ax.contour(xx, yy, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
-# plt.show()
 
 # Compute final decision boundary function
 w = np.sum(alphas.reshape(-1, 1) * y.reshape(-1, 1) * X, axis=0)
@@ -279,26 +248,12 @@ plt.ylim(y_min, y_max)
 plt.savefig('./outputs/plot_1b.jpeg')
 plt.show()
 
-
-# In[ ]:
-
-
-
-
-
 # ## ---------------------------- QUESTION 2 ----------------------------
-
-# In[6]:
-
 
 ## load the larger dataset from homework 1
 with open('./data/data_old.txt') as f:
     data_old = f.readlines()
     f.close()
-
-
-# In[7]:
-
 
 def format_data(data_old):
     """
@@ -328,15 +283,7 @@ def format_data(data_old):
         
     return np.array(feat_array), np.array(label_array)
 
-
-# In[8]:
-
-
 features, labels = format_data(data_old)
-
-
-# In[9]:
-
 
 def train_test_split(features, labels):
     """
@@ -384,15 +331,7 @@ def train_test_split(features, labels):
         
     return train_features, test_features, train_labels, test_labels
 
-
-# In[10]:
-
-
 train_features, test_features, train_labels, test_labels = train_test_split(features, labels)
-
-
-# In[11]:
-
 
 def model_svm_iters(train_features, 
                     test_features, 
@@ -459,22 +398,11 @@ def model_svm_iters(train_features,
 # - Test the model on the testing set and calculate the classification accuracy.
 # - Visualize the decision boundary and the support vectors.
 
-# In[12]:
-
-
 print('------------------------------------ QUESTION 2-A ------------------------------------')
-
-
-# In[ ]:
-
 
 ## data edit for this question
 train_labels_edit = [i if i=='Plastic' else 'Other' for i in train_labels]
 test_labels_edit = [i if i=='Plastic' else 'Other' for i in test_labels]
-
-
-# In[ ]:
-
 
 perf_comp = {'model':[],'c':[],'acc_train':[],'acc_test':[]}
 
@@ -487,7 +415,6 @@ perf_comp = model_svm_iters(train_features,
                             gamma=None,
                             perf_comp=perf_comp)
 
-
 # ### OBSERVATION - 
 # - As we can see, while increasing the regularization weight value of C we see an increase in the model accuracy.
 # 
@@ -499,29 +426,14 @@ perf_comp = model_svm_iters(train_features,
 # 
 # - Also, the model does not appear to be overfitting as the training and testing accuracies are consistent.
 
-# In[ ]:
-
-
 print(perf_comp['acc_train'])
 print(perf_comp['acc_test'])
-
-
-# In[ ]:
-
 
 ## choose the best model
 clf = perf_comp['model'][2]
 
-
-# In[ ]:
-
-
 is_plastic = np.array(train_labels_edit).ravel()=='Plastic'
 is_other = np.array(train_labels_edit).ravel()=='Other'
-
-
-# In[ ]:
-
 
 # Plotting 2D projections of data and decision boundary
 plt.figure(figsize=(15,6))
@@ -539,7 +451,6 @@ plt.plot(xx,yy,"b-")
 plt.plot(train_features[:,0][is_plastic], train_features[:,1][is_plastic], "go",label="plastic")
 plt.plot(train_features[:,0][is_other], train_features[:,1][is_other], "ro",label="not plastic")
 
-
 plt.subplot(132)
 plt.title('Height vs Weight')
 
@@ -552,7 +463,6 @@ plt.plot(xx,yy,"b-")
 # Plot data points
 plt.plot(train_features[:,0][is_plastic], train_features[:,2][is_plastic], "go",label="plastic")
 plt.plot(train_features[:,0][is_other], train_features[:,2][is_other], "ro",label="not plastic")
-
 
 plt.subplot(133)
 plt.title('Diameter vs Weight')
@@ -572,15 +482,7 @@ plt.show()
 
 
 # ## ------------------------------------ QUESTION 2-B ------------------------------------
-
-# In[ ]:
-
-
 print('------------------------------------ QUESTION 2-B ------------------------------------')
-
-
-# In[ ]:
-
 
 perf_comp = {'model':[],'c':[],'acc_train':[],'acc_test':[]}
 
@@ -593,23 +495,11 @@ perf_comp = model_svm_iters(train_features,
                             gamma='scale',
                             perf_comp=perf_comp)
 
-
-# In[ ]:
-
-
 print(perf_comp['acc_train'])
 print(perf_comp['acc_test'])
 
-
-# In[ ]:
-
-
 ## choose the best model
 clf_nl = perf_comp['model'][4]
-
-
-# In[ ]:
-
 
 plt.figure(figsize=(15,6))
 plt.suptitle("Non-Linear (rbf) SVM decision boundary")
@@ -660,7 +550,6 @@ plt.legend(loc="lower right")
 plt.savefig("./outputs/non_lin_svm_clf.jpeg")
 plt.show()
 
-
 # ### OBSERVATIONS - 
 # - As expected and observed earleir, while increasing the regularization weight value of C we see an increase in the model accuracy.
 # 
@@ -672,47 +561,15 @@ plt.show()
 # 
 # - Also, the model does not appear to be overfitting as the training and testing accuracies are consistent.
 
-# In[ ]:
-
-
-
-
-
 # ## ------------------------------------ QUESTION 3-A ------------------------------------
 # 
 # Submitted as a seperate file
 
-# In[ ]:
-
-
 print('------------------------------------ QUESTION 3-A ------------------------------------')
 print('Submitted as a seperate file \n')
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # ## ------------------------------------ QUESTION 3-B ------------------------------------
-
-# In[ ]:
-
-
 print('------------------------------------ QUESTION 3-B ------------------------------------')
-
-
-# In[ ]:
-
-
-import numpy as np
 
 def calc_entropy(y):
     """
@@ -779,17 +636,8 @@ def predict_all(tree, X):
         y_pred.append(predict(tree, example))
     return y_pred
 
-
 # ## ------------------------------------ QUESTION 3-C ------------------------------------
-
-# In[ ]:
-
-
 print('------------------------------------ QUESTION 3-C ------------------------------------')
-
-
-# In[ ]:
-
 
 def labels_str_to_int(labels):
     """
@@ -814,16 +662,8 @@ def labels_str_to_int(labels):
         
     return np.array(labels_int)
 
-
-# In[ ]:
-
-
 train_labels_int = labels_str_to_int(train_labels)
 test_labels_int = labels_str_to_int(test_labels)
-
-
-# In[ ]:
-
 
 perf_comp_dt = {'model':[],'max_depth':[],'acc_train':[],'acc_test':[]}
 
@@ -847,10 +687,6 @@ for max_depth in range(1,9):
     perf_comp_dt['max_depth'].append(max_depth)
     perf_comp_dt['acc_train'].append(acc_train)
     perf_comp_dt['acc_test'].append(acc_test)
-
-
-# In[ ]:
-
 
 for i in zip(perf_comp_dt['acc_train'], perf_comp_dt['acc_test'], perf_comp_dt['max_depth']):
     print(f'For Max Depth = {i[2]}, training accuracy = {round(i[0],2)}, testing accuracy = {round(i[1],2)}')
