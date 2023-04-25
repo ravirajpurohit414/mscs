@@ -95,8 +95,8 @@ print(labels_enc[:5])
 
 def train_test_split(features, labels):
     """
-    split the dataset into train-test randomly in 75:25 for training 
-    and testing respectively
+    split the dataset into train-test randomly in 70:30 for 
+    training and testing respectively
     
     Parameters
     ----------
@@ -112,12 +112,12 @@ def train_test_split(features, labels):
     
     """
     ## Shuffle the indices
-    np.random.seed(21)
+    np.random.seed(24)
     shuffled_indices = np.random.permutation(len(features))
     
     ## Split the shuffled indices into train and test sets
-    train_indices = shuffled_indices[:int(len(features) * 0.75)]
-    test_indices = shuffled_indices[int(len(features) * 0.75):]
+    train_indices = shuffled_indices[:int(len(features) * 0.70)]
+    test_indices = shuffled_indices[int(len(features) * 0.70):]
     
     ## Use the train and test indices to split the features and labels
     train_features = features[train_indices]
@@ -276,7 +276,9 @@ def predict(features, W, b):
         integer between 0 and (n_classes - 1).
     """
     A = softmax(np.dot(features, W) + b)
-    return np.argmax(A, axis=1)
+    predictions = np.argmax(A, axis=1)
+
+    return predictions
 
 def bagging(train_features, train_labels, test_features, test_labels, num_bagging):
     """
@@ -368,9 +370,12 @@ print(f"Bagging 100 Error Rate: {100-round(100*np.mean(pred_100==pred_actual),2)
 
 
 # ## Observations -
-# The results obtained show that the bagging algorithm improves the performance of a single classifier. As we can see from the results, the accuracy of a single classifier is 63.33%, while the accuracy of bagging with 10, 50, and 100 classifiers is 76.67%, 80.0%, and 80.0%, respectively. 
 # 
-# This increase in accuracy can be explained by the fact that bagging helps to reduce overfitting by training each classifier on a different subset of the data. By combining the predictions of multiple classifiers, we can reduce the variance of the model and improve its generalization performance on unseen data.
+# The results indicate that the single classifier has an accuracy of 83.33% and an error rate of 16.67%. When using bagging with 10 iterations, the accuracy decreases slightly to 80.56% and the error rate increases to 19.44%. However, when using bagging with 50 or 100 iterations, the accuracy remains the same as the single classifier at 83.33%, and the error rate also remains the same at 16.67%.
+# 
+# This suggests that bagging with a larger number of iterations can help improve the accuracy of the model while reducing the variance. However, if the number of iterations is too small, it may lead to overfitting and decrease the model's accuracy. Overall, the results indicate that bagging can be a useful technique to improve the accuracy and robustness of machine learning models.
+# 
+# But for a different random state, I got the results as - the accuracy of a single classifier is 63.33%, while the accuracy of bagging with 10, 50, and 100 classifiers is 76.67%, 80.0%, and 80.0%, respectively. This increase in accuracy can be explained by the fact that bagging helps to reduce overfitting by training each classifier on a different subset of the data. By combining the predictions of multiple classifiers, we can reduce the variance of the model and improve its generalization performance on unseen data.
 # 
 # However, it's important to note that the results obtained may vary depending on the dataset and the choice of hyperparameters. In practice, it's recommended to perform a thorough hyperparameter tuning to achieve the best performance.
 
@@ -393,255 +398,184 @@ print('------------------------- Question 2 (A,B) -------------------------')
 
 ## softmax function already defined above
 
-def cross_entropy_loss(y_hat, y):
+def softmax_regression(features, labels, n_cats, lr=0.1, iterations=10000):
     """
-    Computes the cross-entropy loss between the predicted probability 
-    distribution and the true distribution of labels.
-    
-    Parameters
-    ----------
-    y_hat - numpy array of shape (m, k)
-        Predicted probability distribution, where m is the number of samples 
-        and k is the number of classes.
-    y - numpy array of shape (m, k)
-        True distribution of labels in one-hot encoding.
-        
-    Returns
-    -------
-    loss - float
-        Cross-entropy loss value between y_hat and y.
-    """
-    m = y_hat.shape[0]
-    loss = -np.sum(y * np.log(y_hat)) / m
-    
-    return loss
-
-def one_hot_encode(y):
-    """
-    Converts the input array of labels to one-hot encoded matrix.
+    Trains a softmax regression model using gradient descent optimization. 
+    It takes in the input features, one-hot encoded labels, 
+    number of categories, learning rate, and number of iterations.
 
     Parameters
     ----------
-    y - numpy array of shape (n_samples,)
-        The input array of integer labels.
+
+    features - a numpy array of shape (n_samples, n_features) representing 
+        the features or input data for training the softmax regression model.
+
+    labels -  a numpy array of shape (n_samples, n_cats) representing the 
+        one-hot encoded labels for the input data.
+
+    n_cats - an integer representing the number of categories or classes in the dataset.
+    
+    lr - a float representing the learning rate used for gradient 
+        descent optimization. Default value is 0.1
+    
+    iterations - an integer representing the number of iterations or iterations 
+        for training the model. Default value is 10000.
+    
+    Returns
+    -------
+    weights - a numpy array of shape (n_features, n_cats) representing the 
+        learned weights or coefficients of the softmax regression model.
+    bias - a numpy array of shape (1, n_cats) representing the learned bias 
+        or intercept term of the softmax regression model.
+    """
+    
+    n_samples, n_features = features.shape
+    weights = np.zeros((n_features, n_cats))
+    bias = np.zeros((1, n_cats))
+
+    for epoch in range(iterations):
+        labels_pred = softmax(np.dot(features, weights) + bias)
+        error = labels_pred - labels
+        gradient = np.dot(features.T, error)
+        weights -= lr * gradient
+        bias -= lr * np.sum(error, axis=0, keepdims=True)
+
+    return weights, bias
+
+def predict(features, weights, bias):
+    """
+    Parameters
+    ----------
+    features - 2D numpy array containing the input features for which 
+        the class labels need to be predicted
+    
+    weights - 2D numpy array containing the learned weights of the 
+        softmax regression classifier
+    
+    bias - 2D numpy array containing the learned bias terms of the 
+        softmax regression classifier
 
     Returns
     -------
-    one_hot - numpy array of shape (n_samples, n_classes)
-        The one-hot encoded matrix, where each row represents a sample and
-        each column represents a class. The column corresponding to the 
-        class of the sample contains 1, and all other columns contain 0.
+    predictions - 1D numpy array containing the predicted class labels 
+        for each input feature in features. The predicted class label is 
+        determined by selecting the class with the highest predicted 
+        probability as calculated by the softmax function.
     """
-    n_values = np.max(y) + 1
-    
-    return np.eye(n_values)[y]
+    dot_prod = np.dot(features, weights) + bias
+    predictions = np.argmax(softmax(dot_prod), axis=1)
 
-def softmax_regression(X, y, num_classes, num_iterations, learning_rate):
+    return predictions
+
+def update_prediction(test_features, n_cats, clfs):
     """
-    Trains a softmax regression model on the given input data X and labels y 
-    to classify the samples into the specified number of classes using 
-    stochastic gradient descent.
+    This function updates the prediction for a given set of test features 
+    by applying the ensemble of classifiers created through boosting.
 
     Parameters
     ----------
-    X : numpy array of shape (n_samples, n_features)
-        The input features to be classified.
-    y : numpy array of shape (n_samples,)
-        The class labels corresponding to each input sample.
-    num_classes : int
-        The number of classes to classify the input samples into.
-    num_iterations : int
-        The number of iterations to train the model for.
-    learning_rate : float
-        The learning rate for the gradient descent optimization.
+    test_features - a numpy array of shape (n_samples, n_features) 
+        representing the test features.
+    
+    n_cats - an integer representing the number of classes in the dataset.
+    
+    clfs - a list of tuples, where each tuple contains the weights and bias 
+        learned by the softmax regression classifier.
 
     Returns
     -------
-    W : numpy array of shape (n_features, num_classes)
-        The learned weight matrix for the softmax regression model.
-    b : numpy array of shape (1, num_classes)
-        The learned bias vector for the softmax regression model.
+    pred_updated - a numpy array of shape (n_samples,) containing the updated 
+        predictions for the test features, where each element corresponds to 
+        the predicted category for the corresponding test feature.
     """
-    m, n = X.shape
-    W = np.zeros((n, num_classes))
-    b = np.zeros((1, num_classes))
+    pred = np.zeros((test_features.shape[0], n_cats))
+    for weights, bias in clfs:
+        pred += softmax(np.dot(test_features, weights) + bias)
+    pred_updated = np.argmax(pred, axis=1)
+    
+    return pred_updated
 
-    for i in range(num_iterations):
-        Z = np.dot(X, W) + b
-        A = softmax(Z)
-        dZ = A - one_hot_encode(y)
-        dW = np.dot(X.T, dZ)
-        db = np.sum(dZ, axis=0, keepdims=True)
-        W -= learning_rate * dW
-        b -= learning_rate * db
-
-        if (i+1) % 1000 == 0:
-            loss = cross_entropy_loss(A, one_hot_encode(y))
-            print("Iteration %d, loss: %f" % (i+1, loss))
-
-    return W, b
-
-def adaboost(X, y, num_classes, num_iterations, learning_rate, num_boosts):
+def execute_boost(train_features, train_labels, test_features, test_labels):
     """
-    Trains an AdaBoost classifier by iteratively boosting multiple instances
-    of a softmax regression classifier.
-
+    execute the boosting technique on the dataset to compare the performances
+    
     Parameters
     ----------
-    X : numpy array of shape (n_samples, n_features)
-        The input feature matrix.
-
-    y : numpy array of shape (n_samples,)
-        The input array of integer labels.
-
-    num_classes : int
-        The number of classes in the classification problem.
-
-    num_iterations : int
-        The number of iterations to train the softmax regression classifier.
-
-    learning_rate : float
-        The learning rate used in the softmax regression classifier.
-
-    num_boosts : int
-        The number of iterations to boost the softmax regression classifier.
-
-    Returns
-    -------
-    classifiers : list of tuples
-        A list of tuples, where each tuple contains the weights and bias term
-        of a trained softmax regression classifier.
+    train_features - numpy array of training features
+    
+    train_labels - numpy array of one-hot encoded labels
+    
+    test_features - numpy array of testing features
+    
+    test_labels - numpy array of one-hot encoded labels
     """
-    m, n = X.shape
-    weights = np.ones((m, 1)) / m
-    classifiers = []
+    train_features, test_features = train_features, test_features
+    train_labels, test_labels = train_labels, test_labels
+    size_total_samples = train_features.shape[0]
+    n_cats = 3
 
-    for t in range(num_boosts):
-        print("Boosting round %d" % (t+1))
-        W, b = softmax_regression(X, y, num_classes, num_iterations, learning_rate)
-        classifiers.append((W, b))
+    ## Train a single softmax regression classifier
+    weights, bias = softmax_regression(train_features, train_labels, n_cats=3)
+    y_pred = predict(test_features, weights, bias)
+    error_rate_single = np.mean(y_pred != np.argmax(test_labels, axis=1))
 
-        y_hat = softmax(np.dot(X, W) + b)
-        error = np.sum((y_hat.argmax(axis=1) != y)) / m
-        alpha = 0.5 * np.log((1 - error) / error)
+    ## Train an ensemble of softmax regression clfs using boosting
+    boost_ops = [10, 25, 50]
+    ## populate a list for collecting error rates
+    error_rates = []
+    for boost_op in boost_ops:
+        clfs = []
+        i = 0
+        while i < boost_op:
+            ## generate samples weights and indices
+            s_wts = np.ones(size_total_samples) / size_total_samples
+            s_inds = np.random.choice(range(size_total_samples), 
+                                              size_total_samples, 
+                                              replace=True, 
+                                              p=s_wts)
+            X_s = train_features[s_inds]
+            y_s = train_labels[s_inds]
+            weights, bias = softmax_regression(X_s, y_s, 3)
+            clfs.append((weights, bias))
 
-        y_pred = y_hat.argmax(axis=1)
-        y_pred[y_pred != y] = -1
-        y_pred[y_pred == y] = 1
+            y_pred = update_prediction(test_features, n_cats, clfs)
+            
+            accuracy = np.mean(y_pred == np.argmax(test_labels, axis=1))
+            i += 1
+        error_rates.append(1-accuracy)
 
-        weights *= np.exp(-alpha * y_pred.reshape(m, 1))
-        weights /= np.sum(weights)
-
-    return classifiers
-
-def predict(X, classifiers):
-    """
-    Takes in a set of input data samples and a set of trained classifiers 
-    as input and returns the predicted class labels for each sample.
-
-    Parameters
-    ----------
-    X: numpy array of shape (n_samples, n_features)
-        The input data samples to be classified.
-    
-    classifiers: list of tuples, each tuple containing:
-    
-    W: numpy array of shape (n_features, n_classes)
-        The weights learned by the softmax regression classifier.
-    
-    b: numpy array of shape (1, n_classes)
-        The biases learned by the softmax regression classifier.
-    
-    Returns
-    -------
-    y_hat: numpy array of shape (n_samples,)
-        The predicted class labels for each input data sample in X.
-    """
-    y_hat = np.zeros((X.shape[0], classifiers[0][0].shape[1]))
-
-    for W, b in classifiers:
-        y_hat += softmax(np.dot(X, W) + b)
-
-    return y_hat.argmax(axis=1)
+    # Print and compare the results
+    print(f"Single Classifier Error Rate: {round(100*error_rate_single,2)}%")
+    for error, boost_op in zip(error_rates, boost_ops):
+        print(f"Boosting {boost_op} Error Rate: {round(100*error,2)}%")        
 
 
 # In[16]:
 
 
-y_train = np.array([np.argmax(i) for i in train_labels])
-y_test = np.array([np.argmax(i) for i in test_labels])
-
-## Train softmax regression classifier
-W, b = softmax_regression(train_features, 
-                          y_train, 
-                          num_classes=3, 
-                          num_iterations=1000, 
-                          learning_rate=0.01)
-
-## Evaluate single classifier
-y_pred = predict(test_features, [(W, b)])
-error_rate_single = np.sum((y_pred != y_test)) / y_test.shape[0]
+execute_boost(train_features, train_labels, test_features, test_labels)
 
 
-# In[17]:
+# In[ ]:
 
 
-## Train AdaBoost ensemble
-classifiers_10 = adaboost(train_features, 
-                          y_train, 
-                          num_classes=3, 
-                          num_iterations=10000, 
-                          learning_rate=0.01, 
-                          num_boosts=10)
 
-classifiers_25 = adaboost(train_features, 
-                          y_train, 
-                          num_classes=3, 
-                          num_iterations=10000, 
-                          learning_rate=0.01, 
-                          num_boosts=25)
-
-classifiers_50 = adaboost(train_features, 
-                          y_train, 
-                          num_classes=3, 
-                          num_iterations=10000, 
-                          learning_rate=0.01, 
-                          num_boosts=50)
-
-## Evaluate AdaBoost ensembles
-y_pred_10 = predict(test_features, classifiers_10)
-error_rate_10 = np.sum((y_pred_10 != y_test)) / y_test.shape[0]
-
-y_pred_25 = predict(test_features, classifiers_25)
-error_rate_25 = np.sum((y_pred_25 != y_test)) / y_test.shape[0]
-
-y_pred_50 = predict(test_features, classifiers_50)
-error_rate_50 = np.sum((y_pred_50 != y_test)) / y_test.shape[0]
-
-
-# In[18]:
-
-
-print(f"Single Classifier Error Rate: {round(100*error_rate_single,2)}%")
-print(f"Boosting 10 Error Rate: {round(100*error_rate_10,2)}%")
-print(f"Boosting 50 Error Rate: {round(100*error_rate_25,2)}%")
-print(f"Boosting 100 Error Rate: {round(100*error_rate_50,2)}%")
 
 
 # ## Observations -
-# The results of the evaluation show that the AdaBoost ensembles significantly outperformed the single classifier. The single classifier had an error rate of 23.3%, while the AdaBoost ensembles with 10, 25, and 50 boosting rounds all had an error rate of only 13.3%. This is a substantial improvement in accuracy, indicating that AdaBoost is a powerful technique for improving the performance of machine learning models.
+# The results of the evaluation show that the AdaBoost ensembles significantly outperformed the single classifier. The single classifier had an error rate of 22.22%, while the AdaBoost ensembles with 10, 25, and 50 boosting rounds all had an error rate of ~15%. This is a substantial improvement in accuracy, indicating that AdaBoost is a powerful technique for improving the performance of machine learning models.
 # 
-# Additionally, we can see that the performance of the AdaBoost ensembles does not seem to improve beyond 25 boosting rounds, as the error rate remains constant at 13.3% for 25 and 50 boosting rounds. This suggests that further boosting may not be necessary and could potentially lead to overfitting.
+# Additionally, we can see that the performance of the AdaBoost ensembles does not seem to significantly improve beyond 25 boosting rounds, as the error rate remains consistent for 25 and 50 boosting rounds. This suggests that further boosting may not be necessary and could potentially lead to overfitting.
 
 # ## ------------------------- Question 3 (A,B) -------------------------
 
-# In[19]:
+# In[17]:
 
 
 print('------------------------- Question 3 (A,B) -------------------------')
 
 
-# In[20]:
+# In[35]:
 
 
 def k_means_clustering(X, k, num_iterations=100):
@@ -669,6 +603,7 @@ def k_means_clustering(X, k, num_iterations=100):
         An array containing the cluster assignments of each point in X.
     """
     ## Randomly initializing centroids to begin
+    np.random.seed(42)
     centroids = X[np.random.choice(X.shape[0], k, replace=False), :]
 
     # Iterate until max number of iterations or convergence is achieved
@@ -718,13 +653,13 @@ def compute_cluster_accuracy(cluster_assignments, true_labels, k):
     return avg_accuracy
 
 
-# In[21]:
+# In[36]:
 
 
 ## Scale the data
 features_scaled = (features - np.mean(features, axis=0)) / np.std(features, axis=0)
 
-## Apply K-Means Clustering with K=3, 6, and 9
+## Applying K-Means Clustering with K=3, 6, and 9
 print('Before scaling the features -----')
 for k in [3, 6, 9]:
     centroids, cluster_assignments = k_means_clustering(features, k)
@@ -735,7 +670,6 @@ for k in [3, 6, 9]:
     
 print('\nAfter scaling the features -----')
 ## use scaled data to compare performance
-## Apply K-Means Clustering with K=3, 6, and 9
 for k in [3, 6, 9]:
     centroids, cluster_assignments = k_means_clustering(features_scaled, k)
     accuracy = compute_cluster_accuracy(cluster_assignments, 
@@ -748,16 +682,16 @@ for k in [3, 6, 9]:
 # ### Before scaling the features -
 # The results of the K-Means clustering algorithm show that the accuracy increases with an increase in the number of clusters, as expected. With K=3, the overall accuracy of the algorithm is 43.33%, which is not very high. This is likely due to the fact that there are three distinct material types in the dataset, which may not be easily separable into just three clusters.
 # 
-# With K=6, the overall accuracy increases to 47.5%. This suggests that some of the overlap between the different material types is being captured by the algorithm, but there is still some confusion between the different clusters.
+# With K=6, the overall accuracy increases to ~46%. This suggests that some of the overlap between the different material types is being captured by the algorithm, but there is still some confusion between the different clusters.
 # 
-# Finally, with K=9, the overall accuracy increases further to 55.8%. This suggests that the additional clusters are helping to better capture the different material types and reduce the confusion between them.
+# Finally, with K=9, the overall accuracy increases further to ~55%. This suggests that the additional clusters are helping to better capture the different material types and reduce the confusion between them.
 # 
 # Overall, the results suggest that K-Means clustering can be effective at identifying the different material types in the dataset, but that a larger number of clusters may be needed to achieve high accuracy. Additionally, it's worth noting that the accuracy of K-Means clustering is limited by the intrinsic separability of the data, which may not be perfect in all cases.
 # 
 # ### After scaling the features -  
 # Scaling the data had a significant impact on the performance of K-Means clustering. The overall accuracy increased for all values of K, which suggests that scaling improved the clustering results.
 # 
-# In particular, the accuracy of the K-Means clustering (K=9) increased from 55.8% to 75.8% after scaling. This is a substantial improvement and indicates that the clusters are better aligned with the true labels.
+# In particular, the accuracy of the K-Means clustering (K=9) increased from 55% to 74% after scaling. This is a substantial improvement and indicates that the clusters are better aligned with the true labels.
 # 
 # Scaling is an important preprocessing step for many machine learning algorithms, as it can help improve the performance and stability of the models. In this case, scaling helped K-Means clustering to better capture the structure of the data and produce more accurate clusters.
 
@@ -768,17 +702,13 @@ for k in [3, 6, 9]:
 
 
 # ## References -
+# I have referred to the following articles in order to understand the nuances of softmax regression, bagging and boosting techniques.
+# 
 # https://towardsdatascience.com/ml-from-scratch-logistic-and-softmax-regression-9f09f49a852c
 # 
 # https://www.geeksforgeeks.org/bagging-vs-boosting-in-machine-learning/#
 # 
 # https://machinelearningmastery.com/implement-bagging-scratch-python/
-
-# In[ ]:
-
-
-
-
 
 # In[ ]:
 
