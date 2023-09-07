@@ -1,0 +1,50 @@
+user
+id(PK), email, password, first_name, last_name, sex, dob, address, phone, role
+
+student
+id(PK), user_id(FK), school_id(FK), major, status
+
+school
+id(PK), name, address, description
+
+content
+id, poster_student_id(FK), info
+
+club
+id(PK), name, owner_student_id(FK), info, catergory
+
+membership
+id, student_id(FK), club_id(FK)
+
+product
+id(PK), name, description, selling_price, seller_student_id(FK), status, buyer_student_id(FK), category, date_of_sale, date_of_return
+
+payment
+id, product_id(FK), type, value
+
+business
+id, name, info, owner_id, category
+   message
+sender_user_id(FK), receiver_user_id(FK), message
+
+business_owner
+id(PK), user_id(FK)
+
+promotions
+id, business_owner_id(FK), product_id(FK), description, type, value
+
+advertisements
+id, business_owner_id(FK), product_id(FK), descriptions
+
+school_admin
+id, user_id(FK), school_id(FK)
+
+super_admin
+id(PK), user_id(FK)
+
+query
+id(PK), poster_user_id(FK), status, description, response, response_super_admin_id(FK)
+
+Contact
+Id(pk), 
+
